@@ -211,7 +211,8 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--tx);line-he
 </head>
 <body>
 <div id="root"></div>
-<script type="text/babel">
+<script>
+
 const GK_GRAMMARS = [
   {id:"bergmann",name:"Bergmann (2024)",short:"Bergmann",full:"Introdução ao Grego Bíblico",base:true,color:"#2d6a4f"},
   {id:"rega",name:"Rega & Bergmann (2004)",short:"Rega",full:"Noções do Grego Bíblico: Gramática Fundamental",base:false,color:"#1d3557"},
@@ -524,12 +525,14 @@ Responda SOMENTE com JSON puro (sem markdown):
     showT(`"${upMeta.t.slice(0,35)}…" adicionada com sucesso!`);
   };
 
+</script>
+<script type="text/babel">
   // HOME
   const Home=()=>(
     <div className="home">
-      <div className="home-lg"><span className="gk">Ελ</span><span className="sep">·</span><span className="hb">עב</span></div>
-      <div className="home-tit">Línguas Bíblicas — Seminário</div>
-      <div className="home-sub">Estudo integrado de Grego do NT e Hebraico Bíblico com múltiplas gramáticas</div>
+      <div className="home-lg"><span className="gk">{"\u0395\u03bb"}</span><span className="sep">{"\u00b7"}</span><span className="hb">{"\u05e2\u05d1"}</span></div>
+      <div className="home-tit">L{"\u00ed"}nguas B{"\u00ed"}blicas {"\u2014"} Semin{"\u00e1"}rio</div>
+      <div className="home-sub">Estudo integrado de Grego do NT e Hebraico B{"\u00ed"}blico com m{"\u00fa"}ltiplas gram{"\u00e1"}ticas</div>
       <div className="home-cards">
         {[
           {key:"greek",sym:"Ελληνικά",nm:"Grego do NT",desc:`24 lições · Bergmann (base) + ${GK_GRAMMARS.length-1+gkCust.length} gramáticas complementares`,done:gkDone.length,gr:GK_GRAMMARS.length+gkCust.length},
@@ -566,7 +569,7 @@ Responda SOMENTE com JSON puro (sem markdown):
         {lessons.map(l=>(
           <div key={l.id} className="lcard-sm" onClick={()=>{setLesson(l);setTab("conteudo");}}>
             <div style={{position:"absolute",left:0,top:0,bottom:0,width:3,background:acv,borderRadius:"3px 0 0 3px"}}/>
-            <div style={{fontSize:10,color:"var(--tx3)",marginBottom:3,fontWeight:500}}>Lição {l.id} {done.includes(l.id)?"✓":""}</div>
+            <div style={{fontSize:10,color:"var(--tx3)",marginBottom:3,fontWeight:500}}>Li{"\u00e7"}{"\u00e3"}o {l.id} {done.includes(l.id)?"✓":""}</div>
             <div style={{fontSize:13,fontWeight:600,color:"var(--tx)",marginBottom:2}}>{l.t}</div>
             <div style={{fontSize:10.5,color:"var(--tx3)",lineHeight:1.3}}>{l.s||l.top[0]}</div>
             <div style={{fontSize:10,marginTop:7,fontWeight:600,color:acv}}>{l.cat}</div>
@@ -591,11 +594,11 @@ Responda SOMENTE com JSON puro (sem markdown):
       <div>
         <div className="lhdr">
           <div className="bc">
-            <span className={`bcl ${ac}`} onClick={()=>setLesson(null)}>Início</span>&nbsp;→&nbsp;
-            <span className={`bcl ${ac}`} onClick={()=>setLesson(null)}>{isG?"Grego NT":"Hebraico AT"}</span>&nbsp;→&nbsp;
-            <span style={{color:"var(--tx3)"}}>Lição {l.id}</span>
+            <span className={`bcl ${ac}`} onClick={()=>setLesson(null)}>In{"\u00ed"}cio</span>&nbsp;{"\u2192"}&nbsp;
+            <span className={`bcl ${ac}`} onClick={()=>setLesson(null)}>{isG?"Grego NT":"Hebraico AT"}</span>&nbsp;{"\u2192"}&nbsp;
+            <span style={{color:"var(--tx3)"}}>Li{"\u00e7"}{"\u00e3"}o {l.id}</span>
           </div>
-          <div className={`lbadge b${ac[0]}`}>Lição {l.id} de 24</div>
+          <div className={`lbadge b${ac[0]}`}>Li{"\u00e7"}{"\u00e3"}o {l.id} de 24</div>
           <div className="ltitle">{l.t}</div>
           {l.s&&<div className="lsubt">{l.s}</div>}
           <div className="lmeta">
@@ -607,7 +610,7 @@ Responda SOMENTE com JSON puro (sem markdown):
         </div>
 
         <div className="vbox">
-          <div className="vlbl">Versículo da Lição</div>
+          <div className="vlbl">Vers{"\u00ed"}culo da Li{"\u00e7"}{"\u00e3"}o</div>
           <div className={`vtext${l.rtl?" rtl":""}`}>{l.v}</div>
           <div className="vtrans">{l.tr}</div>
         </div>
@@ -622,13 +625,13 @@ Responda SOMENTE com JSON puro (sem markdown):
         {tab==="visao"&&(
           <div>
             <div className="card">
-              <div className="ctit">Tópicos desta Lição</div>
+              <div className="ctit">T{"\u00f3"}picos desta Li{"\u00e7"}{"\u00e3"}o</div>
               {l.top.map((t,i)=>(
                 <div key={i} className="topi"><div className="topd" style={{background:acv}}/>{t}</div>
               ))}
             </div>
             <div className="card">
-              <div className="ctit">Gramáticas Utilizadas</div>
+              <div className="ctit">Gram{"\u00e1"}ticas Utilizadas</div>
               {allG.map(g=>(
                 <div key={g.id} style={{display:"flex",alignItems:"flex-start",gap:10,marginBottom:12}}>
                   <div style={{width:10,height:10,borderRadius:"50%",background:g.color,marginTop:5,flexShrink:0}}/>
@@ -648,17 +651,17 @@ Responda SOMENTE com JSON puro (sem markdown):
 
         {tab==="conteudo"&&(
           ldC&&!aiC[ck]?(
-            <div className="ld"><div className={`sp ${ac}`}/><div className="lt">Gerando explicação com {allG.length} gramáticas…</div></div>
+            <div className="ld"><div className={`sp ${ac}`}/><div className="lt">Gerando explica{"\u00e7"}{"\u00e3"}o com {allG.length} gram{"\u00e1"}ticas{"\u2026"}</div></div>
           ):(
             <div>
               <div className="card">
                 <div className="aic" dangerouslySetInnerHTML={{__html:aiC[ck]||""}}/>
                 <div className="refs">
-                  <div className="reft">Fontes desta Lição</div>
+                  <div className="reft">Fontes desta Li{"\u00e7"}{"\u00e3"}o</div>
                   {allG.map(g=>(
                     <div key={g.id} className="refi">
                       <div className="refd" style={{background:g.color}}/>
-                      <span><strong>{g.short}</strong> — {g.full}. {g.name}. {g.base?"(Gramática Base)":"(Complementar)"}</span>
+                      <span><strong>{g.short}</strong> {"\u2014"} {g.full}. {g.name}. {g.base?"(Gramática Base)":"(Complementar)"}</span>
                     </div>
                   ))}
                 </div>
@@ -666,7 +669,7 @@ Responda SOMENTE com JSON puro (sem markdown):
               <div style={{textAlign:"right"}}>
                 <button style={{color:"var(--tx3)",border:"1px solid var(--bd)",borderRadius:8,padding:"6px 14px",background:"var(--sf)",cursor:"pointer",fontSize:12,fontFamily:"'Inter',sans-serif"}}
                   onClick={()=>{setAiC(p=>{const n={...p};delete n[ck];return n;});genC(l);}}>
-                  ↺ Regenerar explicação
+                  {"\u21ba"} Regenerar explica{"\u00e7"}{"\u00e3"}o
                 </button>
               </div>
             </div>
@@ -675,7 +678,7 @@ Responda SOMENTE com JSON puro (sem markdown):
 
         {tab==="vocabulario"&&(
           <div className="card">
-            <div className="ctit">Termos-Chave desta Lição</div>
+            <div className="ctit">Termos-Chave desta Li{"\u00e7"}{"\u00e3"}o</div>
             <div className="tgrid">
               {l.trm.map((term,i)=>{
                 const[lw,...rest]=term.split(" — ");
@@ -692,18 +695,18 @@ Responda SOMENTE com JSON puro (sem markdown):
 
         {tab==="atividades"&&(
           ldQ&&!quizD[qk]?(
-            <div className="ld"><div className={`sp ${ac}`}/><div className="lt">Gerando atividades avaliativas…</div></div>
+            <div className="ld"><div className={`sp ${ac}`}/><div className="lt">Gerando atividades avaliativas{"\u2026"}</div></div>
           ):isFin?(()=>{
             const corr=qs.filter(q=>ans[`${lang}_${l.id}_${q.id}`]===q.correct).length;
             const pct=Math.round((corr/qs.length)*100);
             return(
               <div className="qscore">
                 <div className={`qsn ${ac}`}>{pct}%</div>
-                <div className="qsl">{corr} de {qs.length} questões corretas</div>
+                <div className="qsl">{corr} de {qs.length} quest{"\u00f5"}es corretas</div>
                 <div className="qsm">{pct>=80?"🎉 Excelente! Você dominou esta lição.":pct>=60?"👍 Bom progresso! Revise os pontos que errou.":"📖 Continue estudando — a perseverança é fundamental."}</div>
                 <div style={{display:"flex",gap:10,justifyContent:"center",flexWrap:"wrap"}}>
-                  <button className="nb" onClick={()=>resetQ(l.id)}>↺ Refazer</button>
-                  {next&&<button className={`nb p${ac[0]}`} onClick={()=>{setLesson(next);setTab("conteudo");}}>Lição {next.id} →</button>}
+                  <button className="nb" onClick={()=>resetQ(l.id)}>{"\u21ba"} Refazer</button>
+                  {next&&<button className={`nb p${ac[0]}`} onClick={()=>{setLesson(next);setTab("conteudo");}}>Li{"\u00e7"}{"\u00e3"}o {next.id} {"\u2192"}</button>}
                 </div>
               </div>
             );
@@ -716,7 +719,7 @@ Responda SOMENTE com JSON puro (sem markdown):
                 const isOk=chosen===q.correct;
                 return(
                   <div key={q.id} className={`qcard${answered?(isOk?" ok":" bad"):""}`}>
-                    <div className="qnum">Questão {qi+1} · {qi<3?"Básica":qi<6?"Intermediária":"Avançada"}</div>
+                    <div className="qnum">Quest{"\u00e3"}o {qi+1} {"\u00b7"} {qi<3?"Básica":qi<6?"Intermediária":"Avançada"}</div>
                     <div className="qq" dangerouslySetInnerHTML={{__html:q.question}}/>
                     <div className="qopts">
                       {q.options.map((opt,oi)=>{
@@ -748,7 +751,7 @@ Responda SOMENTE com JSON puro (sem markdown):
                     style={{padding:"10px 28px",borderRadius:8,background:allAns?acv:"var(--bd)",color:"#fff",border:"none",fontSize:14,fontWeight:600,cursor:allAns?"pointer":"not-allowed",fontFamily:"'Inter',sans-serif"}}
                     onClick={()=>finishQ(l.id)}>Ver resultado final
                   </button>
-                  {!allAns&&<div style={{fontSize:11,color:"var(--tx3)",marginTop:6}}>Responda todas as questões para ver o resultado</div>}
+                  {!allAns&&<div style={{fontSize:11,color:"var(--tx3)",marginTop:6}}>Responda todas as quest{"\u00f5"}es para ver o resultado</div>}
                 </div>
               )}
             </div>
@@ -757,10 +760,10 @@ Responda SOMENTE com JSON puro (sem markdown):
 
         <div className="lnav">
           <button className={`nb ${ac}`} onClick={()=>prev?setLesson(prev):setLesson(null)}>
-            ← {prev?`Lição ${prev.id}`:"Início"}
+            {"\u2190"} {prev?`Lição ${prev.id}`:"Início"}
           </button>
           <span style={{fontSize:12,color:"var(--tx3)"}}>{l.id} / 24</span>
-          {next&&<button className={`nb p${ac[0]}`} onClick={()=>setLesson(next)}>Lição {next.id} →</button>}
+          {next&&<button className={`nb p${ac[0]}`} onClick={()=>setLesson(next)}>Li{"\u00e7"}{"\u00e3"}o {next.id} {"\u2192"}</button>}
         </div>
       </div>
     );
@@ -785,12 +788,12 @@ Responda SOMENTE com JSON puro (sem markdown):
                 <div className="litit">{l.t}</div>
                 {l.s&&<div className="lisub">{l.s}</div>}
               </div>
-              <div className="lichk" style={{color:acv}}>✓</div>
+              <div className="lichk" style={{color:acv}}>{"\u2713"}</div>
             </div>
           ))}
         </div>
         <div className="gp">
-          <div className="gp-lbl">Gramáticas</div>
+          <div className="gp-lbl">Gram{"\u00e1"}ticas</div>
           {allG.map(g=>(
             <div key={g.id} className="gp-i">
               <div className="gp-dot" style={{background:g.color}}/>
@@ -809,9 +812,9 @@ Responda SOMENTE com JSON puro (sem markdown):
   const UpModal=()=>(
     <div className="mov" onClick={e=>e.target===e.currentTarget&&setShowUp(false)}>
       <div className="mod">
-        <div className="modtit">Adicionar Gramática de {isG?"Grego":"Hebraico"}</div>
+        <div className="modtit">Adicionar Gram{"\u00e1"}tica de {isG?"Grego":"Hebraico"}</div>
         <div className="modsub">
-          Adicione uma gramática em PDF. Ela será automaticamente usada para enriquecer todas as lições, sempre referenciada quando citada.
+          Adicione uma gram{"\u00e1"}tica em PDF. Ela ser{"\u00e1"} automaticamente usada para enriquecer todas as li{"\u00e7"}{"\u00f5"}es, sempre referenciada quando citada.
         </div>
         <div className={`ua${drag?" ov":""}`+(!isG?" hbm":"")}
           onClick={()=>fRef.current?.click()}
@@ -828,12 +831,12 @@ Responda SOMENTE com JSON puro (sem markdown):
         <input className={`mi${!isG?" hbm":""}`} placeholder="Ano de publicação (opcional)" value={upMeta.y} onChange={e=>setUpMeta(p=>({...p,y:e.target.value}))}/>
         {custG.length>0&&(
           <div style={{marginTop:12}}>
-            <div style={{fontSize:10,color:"var(--tx3)",fontWeight:700,textTransform:"uppercase",letterSpacing:".05em",marginBottom:6}}>Já adicionadas</div>
+            <div style={{fontSize:10,color:"var(--tx3)",fontWeight:700,textTransform:"uppercase",letterSpacing:".05em",marginBottom:6}}>J{"\u00e1"} adicionadas</div>
             {custG.map(g=>(
               <div key={g.id} className="adi">
                 <div style={{width:8,height:8,borderRadius:"50%",background:g.color,flexShrink:0}}/>
                 <div style={{flex:1}}>{g.full}</div>
-                <button style={{background:"none",border:"none",color:"var(--tx3)",cursor:"pointer",fontSize:17}} onClick={()=>setCustG(p=>p.filter(x=>x.id!==g.id))}>×</button>
+                <button style={{background:"none",border:"none",color:"var(--tx3)",cursor:"pointer",fontSize:17}} onClick={()=>setCustG(p=>p.filter(x=>x.id!==g.id))}>{"\u00d7"}</button>
               </div>
             ))}
           </div>
@@ -841,7 +844,7 @@ Responda SOMENTE com JSON puro (sem markdown):
         <div className="mact">
           <button className="bcnc" onClick={()=>{setShowUp(false);setUpFile(null);setUpMeta({a:"",t:"",y:""});}}>Cancelar</button>
           <button className={`bok ${isG?"gk":"hb"}`} disabled={!upFile||!upMeta.a||!upMeta.t} onClick={addGrammar}>
-            Adicionar à biblioteca
+            Adicionar {"\u00e0"} biblioteca
           </button>
         </div>
       </div>
@@ -852,15 +855,15 @@ Responda SOMENTE com JSON puro (sem markdown):
     <div style={{minHeight:"100vh",display:"flex",flexDirection:"column"}}>
       {/* HEADER */}
       <div className="hdr">
-        <div className="hdr-mark" onClick={()=>{setLang(null);setLesson(null);}}>Ελ · עב</div>
+        <div className="hdr-mark" onClick={()=>{setLang(null);setLesson(null);}}>{"\u0395\u03bb \u00b7 \u05e2\u05d1"}</div>
         <div className="hdr-sep"/>
         <div>
-          <div className="hdr-title">Línguas <em>Bíblicas</em></div>
-          <div className="hdr-sub">Grego NT · Hebraico AT · Seminário</div>
+          <div className="hdr-title">L{"\u00ed"}nguas <em>B{"\u00ed"}blicas</em></div>
+          <div className="hdr-sub">Grego NT {"\u00b7"} Hebraico AT {"\u00b7"} Semin{"\u00e1"}rio</div>
         </div>
         <div className="hdr-right">
-          {lang&&lesson&&<button className="btn-h" onClick={()=>setLesson(null)}>← Lições</button>}
-          {lang&&!lesson&&<button className="btn-h" onClick={()=>setLang(null)}>← Início</button>}
+          {lang&&lesson&&<button className="btn-h" onClick={()=>setLesson(null)}>{"\u2190"} Li{"\u00e7"}{"\u00f5"}es</button>}
+          {lang&&!lesson&&<button className="btn-h" onClick={()=>setLang(null)}>{"\u2190"} In{"\u00ed"}cio</button>}
           
         </div>
       </div>
@@ -868,13 +871,13 @@ Responda SOMENTE com JSON puro (sem markdown):
       {/* LANG BAR */}
       <div className="lbar">
         <div className={`ltab${lang==="greek"?" ag":""}`} onClick={()=>{setLang("greek");setLesson(null);}}>
-          <span className="l-icon" style={{color:"var(--gn)"}}>Α</span>
+          <span className="l-icon" style={{color:"var(--gn)"}}>{"\u0391"}</span>
           Grego do NT
           <span className="l-cnt">{gkDone.length}/24</span>
         </div>
         <div className={`ltab${lang==="hebrew"?" ah":""}`} onClick={()=>{setLang("hebrew");setLesson(null);}}>
-          <span className="l-icon" style={{color:"var(--bl)"}}>א</span>
-          Hebraico Bíblico
+          <span className="l-icon" style={{color:"var(--bl)"}}>{"\u05d0"}</span>
+          Hebraico B{"\u00ed"}blico
           <span className="l-cnt">{hbDone.length}/24</span>
         </div>
       </div>
@@ -892,7 +895,7 @@ Responda SOMENTE com JSON puro (sem markdown):
             onBlur={e=>e.target.style.borderColor='var(--bd)'}
           />
         </div>
-        {searchResults&&<button onClick={()=>{setSearch('');setSearchResults(null);}} style={{fontSize:12,color:'var(--tx3)',background:'none',border:'none',cursor:'pointer'}}>✕ Limpar</button>}
+        {searchResults&&<button onClick={()=>{setSearch('');setSearchResults(null);}} style={{fontSize:12,color:'var(--tx3)',background:'none',border:'none',cursor:'pointer'}}>{"\u2715"} Limpar</button>}
       </div>
 
       {searchResults ? <SearchResults results={searchResults} onSelect={(lng,l)=>{setLang(lng);setLesson(l);setTab('conteudo');setSearchResults(null);setSearch('');}} /> : <div className="layout">
@@ -911,6 +914,7 @@ Responda SOMENTE com JSON puro (sem markdown):
 }
 
 ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+
 
 </script>
 </body>
