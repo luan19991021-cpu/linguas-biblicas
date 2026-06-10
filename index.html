@@ -1,917 +1,338 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Línguas Bíblicas — Seminário</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#f8f5f0;--sf:#fff;--sf2:#f2ede6;--bd:#e2d9cc;--tx:#1a1208;--tx2:#5c4a2a;--tx3:#8c7355;--gn:#2d6a4f;--gl:#e8f5ee;--bl:#1a3a6b;--bll:#e8f0fc;--gd:#b8860b;--gdl:#fdf8e8;--r:12px;--sh:0 2px 16px rgba(0,0,0,.08);--shl:0 8px 40px rgba(0,0,0,.14)}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--tx);line-height:1.6;overflow-x:hidden}
-::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--bd);border-radius:3px}
-/* HEADER */
-.hdr{background:linear-gradient(135deg,#1a3d2b 0%,#2d6a4f 55%,#3d8b6f 100%);color:#fff;display:flex;align-items:center;gap:16px;min-height:64px;padding:0 28px;position:sticky;top:0;z-index:100;box-shadow:0 2px 24px rgba(0,0,0,.25)}
-.hdr-mark{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:700;color:#fff;cursor:pointer;letter-spacing:-.02em;text-shadow:0 2px 8px rgba(0,0,0,.2);line-height:1;flex-shrink:0}
-.hdr-sep{width:1px;height:32px;background:rgba(255,255,255,.25);flex-shrink:0}
-.hdr-title{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:700;color:#fff;letter-spacing:.02em;line-height:1.1}
-.hdr-title em{font-style:italic;color:#a8d5b5}
-.hdr-sub{font-size:10.5px;color:rgba(255,255,255,.6);letter-spacing:.04em;margin-top:1px}
-.hdr-right{margin-left:auto;display:flex;align-items:center;gap:8px}
-.btn-h{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);color:#fff;padding:5px 14px;border-radius:18px;font-size:12px;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif}
-.btn-h:hover{background:rgba(255,255,255,.22)}
-/* LANG BAR */
-.lbar{display:flex;background:var(--sf);border-bottom:1px solid var(--bd);padding:0 28px;position:sticky;top:64px;z-index:99;box-shadow:0 1px 8px rgba(0,0,0,.06)}
-.ltab{display:flex;align-items:center;gap:8px;padding:12px 20px;font-size:13px;font-weight:500;color:var(--tx3);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1px;transition:all .15s;font-family:'Inter',sans-serif;user-select:none}
-.ltab:hover{color:var(--tx)}
-.ltab.ag{color:var(--gn);border-bottom-color:var(--gn);font-weight:700}
-.ltab.ah{color:var(--bl);border-bottom-color:var(--bl);font-weight:700}
-.l-icon{font-family:'Noto Serif',serif;font-size:18px;font-weight:700}
-.l-cnt{font-size:10px;background:var(--sf2);border-radius:8px;padding:1px 7px;color:var(--tx3)}
-/* LAYOUT */
-.layout{display:flex;min-height:calc(100vh - 104px)}
-/* SIDEBAR */
-.sbar{width:268px;flex-shrink:0;background:var(--sf);border-right:1px solid var(--bd);height:calc(100vh - 104px);position:sticky;top:104px;overflow-y:auto;display:flex;flex-direction:column}
-.prog-w{padding:11px 14px;background:var(--sf2);border-bottom:1px solid var(--bd)}
-.prog-lbl{display:flex;justify-content:space-between;font-size:10px;color:var(--tx3);margin-bottom:5px;font-weight:500}
-.prog-bar{height:4px;background:var(--bd);border-radius:2px;overflow:hidden}
-.prog-fill{height:100%;border-radius:2px;transition:width .4s ease}
-.fill-g{background:linear-gradient(90deg,var(--gn),#52b788)}
-.fill-b{background:linear-gradient(90deg,var(--bl),#4a90d9)}
-.sbar-list{flex:1;padding:10px 10px 0;overflow-y:auto}
-.li{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;cursor:pointer;transition:all .15s;margin-bottom:2px}
-.li:hover{background:var(--sf2)}
-.li.ag{background:var(--gl)}.li.ag .linum,.li.ag .litit{color:var(--gn);font-weight:600}
-.li.ah{background:var(--bll)}.li.ah .linum,.li.ah .litit{color:var(--bl);font-weight:600}
-.linum{font-size:11px;font-weight:500;color:var(--tx3);width:24px;flex-shrink:0}
-.lidot{width:7px;height:7px;border-radius:50%;flex-shrink:0;opacity:.4}
-.li.ag .lidot,.li.ah .lidot{opacity:1}
-.liinfo{flex:1;min-width:0}
-.litit{font-size:12.5px;font-weight:500;color:var(--tx);line-height:1.3}
-.lisub{font-size:10.5px;color:var(--tx3);line-height:1.2;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.lichk{font-size:11px;flex-shrink:0;opacity:0}
-.li.done .lichk{opacity:1}
-/* GRAMMAR PANEL */
-.gp{border-top:1px solid var(--bd);padding:12px;background:var(--sf2);margin-top:auto}
-.gp-lbl{font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--tx3);margin-bottom:8px}
-.gp-i{display:flex;align-items:center;gap:7px;padding:4px 6px;border-radius:6px;margin-bottom:2px}
-.gp-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.gp-nm{font-size:11px;color:var(--tx2);flex:1}
-.gp-bdg{font-size:9px;padding:1px 6px;border-radius:8px;color:#fff;font-weight:700}
-.add-btn{width:100%;margin-top:9px;padding:7px;border:1.5px dashed var(--bd);border-radius:8px;background:transparent;color:var(--tx3);font-size:12px;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif;text-align:center}
-.add-btn:hover{border-color:var(--gn);color:var(--gn);background:var(--gl)}
-.add-btn.hb:hover{border-color:var(--bl);color:var(--bl);background:var(--bll)}
-/* MAIN */
-.main{flex:1;overflow-y:auto;padding:36px 40px;max-width:860px}
-/* HOME */
-.home{text-align:center;padding:50px 20px 30px}
-.home-lg{font-family:'Cormorant Garamond',serif;font-size:56px;font-weight:700;line-height:1;margin-bottom:10px;display:flex;justify-content:center;gap:14px;align-items:baseline}
-.home-lg .gk{color:var(--gn)}.home-lg .hb{color:var(--bl)}.home-lg .sep{color:var(--bd);font-size:38px}
-.home-tit{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;color:var(--tx);margin-bottom:6px}
-.home-sub{font-size:13px;color:var(--tx3);margin-bottom:32px}
-.home-cards{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin-bottom:40px}
-.lcard{background:var(--sf);border:2px solid var(--bd);border-radius:16px;padding:28px 30px;width:255px;cursor:pointer;transition:all .22s;text-align:left;position:relative;overflow:hidden}
-.lcard::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px}
-.lcard.gk::after{background:linear-gradient(90deg,var(--gn),#52b788)}
-.lcard.hb::after{background:linear-gradient(90deg,var(--bl),#4a90d9)}
-.lcard:hover{box-shadow:var(--shl);transform:translateY(-3px)}
-.lcard.gk:hover{border-color:var(--gn)}.lcard.hb:hover{border-color:var(--bl)}
-.lc-sym{font-family:'Noto Serif',serif;font-size:46px;line-height:1;margin-bottom:12px;display:block}
-.lc-sym.gk{color:var(--gn)}.lc-sym.hb{color:var(--bl)}
-.lc-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--tx);margin-bottom:4px}
-.lc-desc{font-size:12px;color:var(--tx3);line-height:1.5;margin-bottom:14px}
-.lc-sts{display:flex;gap:12px}
-.lc-sn{font-size:20px;font-weight:700;font-family:'Cormorant Garamond',serif}
-.lc-sn.gk{color:var(--gn)}.lc-sn.hb{color:var(--bl)}
-.lc-sl{font-size:10px;color:var(--tx3);text-transform:uppercase;letter-spacing:.04em}
-/* LANG HOME GRID */
-.lgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px}
-.lcard-sm{padding:14px 14px 14px 18px;background:var(--sf);border:1px solid var(--bd);border-radius:12px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
-.lcard-sm:hover{box-shadow:var(--sh);transform:translateY(-2px)}
-/* LESSON */
-.lhdr{margin-bottom:28px}
-.bc{font-size:12px;color:var(--tx3);margin-bottom:10px;display:flex;align-items:center;gap:5px}
-.bcl{cursor:pointer;font-weight:500}
-.bcl.gk{color:var(--gn)}.bcl.hb{color:var(--bl)}
-.lbadge{display:inline-flex;align-items:center;border-radius:18px;font-size:11px;font-weight:600;padding:3px 11px;margin-bottom:10px;letter-spacing:.05em}
-.bg{background:var(--gl);color:var(--gn)}.bb{background:var(--bll);color:var(--bl)}
-.ltitle{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:700;color:var(--tx);line-height:1.1;margin-bottom:4px}
-.lsubt{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:400;font-style:italic;color:var(--tx3);margin-bottom:14px}
-.lmeta{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-.cbadge{font-size:11px;font-weight:600;padding:3px 10px;border-radius:12px;color:#fff}
-.done-btn{padding:8px 20px;border-radius:8px;border:none;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif}
-.done-btn.gk{background:var(--gn);color:#fff}.done-btn.hb{background:var(--bl);color:#fff}
-.done-btn.done{background:transparent!important;border:1.5px solid currentColor}
-.done-btn.done.gk{color:var(--gn)}.done-btn.done.hb{color:var(--bl)}
-/* VERSE */
-.vbox{border-left:4px solid var(--gd);background:var(--gdl);border-radius:var(--r);padding:18px 22px;margin-bottom:28px;border:1px solid rgba(184,134,11,.18)}
-.vlbl{font-size:9.5px;color:var(--tx3);text-transform:uppercase;letter-spacing:.08em;font-weight:600;margin-bottom:7px}
-.vtext{font-family:'Noto Serif',serif;font-size:21px;color:var(--tx);margin-bottom:6px;line-height:1.6}
-.vtext.rtl{direction:rtl;text-align:right;font-size:23px}
-.vtrans{font-size:13px;color:var(--tx2);font-style:italic}
-/* TABS */
-.tabs{display:flex;gap:2px;margin-bottom:24px;border-bottom:1px solid var(--bd)}
-.tab{padding:9px 16px;font-size:13px;font-weight:500;color:var(--tx3);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s;font-family:'Inter',sans-serif}
-.tab:hover{color:var(--tx)}
-/* CARDS */
-.card{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:22px;margin-bottom:14px}
-.ctit{font-size:10.5px;font-weight:700;color:var(--tx3);margin-bottom:14px;display:flex;align-items:center;gap:8px;letter-spacing:.07em;text-transform:uppercase}
-.ctit::after{content:'';flex:1;height:1px;background:var(--bd)}
-.topi{display:flex;align-items:flex-start;gap:9px;padding:7px 0;border-bottom:1px solid var(--bd);font-size:13.5px;color:var(--tx2)}
-.topi:last-child{border-bottom:none}
-.topd{width:6px;height:6px;border-radius:50%;margin-top:7px;flex-shrink:0}
-.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:7px}
-.tchip{background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:7px 11px}
-.tlang{font-family:'Noto Serif',serif;font-size:16px;display:block;margin-bottom:2px}
-.tlang.hb{direction:rtl;text-align:right;font-size:18px}
-.tpt{font-size:11px;color:var(--tx3)}
-/* AI */
-.aic{font-size:14.5px;line-height:1.82;color:var(--tx2)}
-.aic h3{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--tx);margin:22px 0 10px;line-height:1.2}
-.aic h4{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--tx3);margin:18px 0 7px}
-.aic p{margin-bottom:12px}
-.aic .lw{font-family:'Noto Serif',serif;font-size:16px;font-weight:600}
-.aic .lw.gk{color:var(--gn)}.aic .lw.hb{color:var(--bl)}
-.aic table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
-.aic th{background:var(--sf2);padding:7px 11px;text-align:left;font-weight:600;color:var(--tx2);border:1px solid var(--bd);font-size:10.5px;text-transform:uppercase;letter-spacing:.05em}
-.aic td{padding:7px 11px;border:1px solid var(--bd);color:var(--tx2);vertical-align:top}
-.aic .tip{background:var(--gl);border-left:3px solid var(--gn);border-radius:0 8px 8px 0;padding:11px 15px;margin:14px 0;font-size:13.5px}
-.aic .tip.bl{background:var(--bll);border-left-color:var(--bl)}
-.aic .warn{background:#fff8e1;border-left:3px solid var(--gd);border-radius:0 8px 8px 0;padding:11px 15px;margin:14px 0;font-size:13.5px;color:#5d4037}
-.cit{display:inline-flex;align-items:center;gap:4px;background:var(--sf2);border:1px solid var(--bd);border-radius:5px;padding:2px 7px;font-size:10.5px;color:var(--tx3);margin:4px 3px;font-style:italic}
-.citd{width:5px;height:5px;border-radius:50%;flex-shrink:0}
-.refs{margin-top:22px;padding-top:18px;border-top:1px solid var(--bd)}
-.reft{font-size:10px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
-.refi{display:flex;gap:9px;margin-bottom:7px;font-size:11.5px;color:var(--tx3);align-items:flex-start}
-.refd{width:7px;height:7px;border-radius:50%;margin-top:4px;flex-shrink:0}
-/* QUIZ */
-.qcont{display:flex;flex-direction:column;gap:18px}
-.qcard{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:22px;transition:all .2s}
-.qcard.ok{border-color:#2d6a4f;background:#f0fff4}
-.qcard.bad{border-color:#c0392b;background:#fff5f5}
-.qnum{font-size:10.5px;color:var(--tx3);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:9px}
-.qq{font-size:15px;font-weight:500;color:var(--tx);margin-bottom:14px;line-height:1.45}
-.qopts{display:flex;flex-direction:column;gap:7px}
-.qo{padding:10px 14px;border:1.5px solid var(--bd);border-radius:8px;cursor:pointer;font-size:13.5px;color:var(--tx2);transition:all .15s;background:var(--sf);text-align:left;font-family:'Inter',sans-serif;width:100%}
-.qo:hover:not(:disabled){border-color:var(--gn);background:var(--gl)}
-.qo.blhov:hover:not(:disabled){border-color:var(--bl);background:var(--bll)}
-.qo.sok{border-color:#2d6a4f!important;background:#e8f5ee!important;color:#1b5e20!important}
-.qo.sbad{border-color:#c0392b!important;background:#fff0f0!important;color:#b71c1c!important}
-.qo.show{border-color:#2d6a4f!important;background:#e8f5ee!important;color:#1b5e20!important}
-.qo:disabled{cursor:default}
-.qfb{margin-top:11px;padding:9px 13px;border-radius:8px;font-size:12.5px;line-height:1.5}
-.qfb.ok{background:#e8f5ee;color:#1b5e20}.qfb.bad{background:#fff0f0;color:#b71c1c}
-.qscore{text-align:center;padding:36px 28px;background:var(--sf);border:1px solid var(--bd);border-radius:var(--r)}
-.qsn{font-size:60px;font-weight:700;font-family:'Cormorant Garamond',serif;line-height:1}
-.qsn.gk{color:var(--gn)}.qsn.hb{color:var(--bl)}
-.qsl{font-size:13px;color:var(--tx3);margin-top:3px}
-.qsm{font-size:17px;font-weight:500;color:var(--tx);margin:14px 0 22px}
-/* LOADING */
-.ld{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:60px;color:var(--tx3)}
-.sp{width:34px;height:34px;border:3px solid var(--bd);border-radius:50%;animation:spin .8s linear infinite}
-.sp.gk{border-top-color:var(--gn)}.sp.hb{border-top-color:var(--bl)}
-@keyframes spin{to{transform:rotate(360deg)}}
-.lt{font-size:13px;animation:pulse 1.5s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
-/* NAV */
-.lnav{display:flex;justify-content:space-between;align-items:center;margin-top:36px;padding-top:22px;border-top:1px solid var(--bd)}
-.nb{display:flex;align-items:center;gap:7px;padding:9px 18px;border:1.5px solid var(--bd);border-radius:8px;background:var(--sf);color:var(--tx2);cursor:pointer;font-size:13px;font-weight:500;transition:all .2s;font-family:'Inter',sans-serif}
-.nb.gk:hover{border-color:var(--gn);color:var(--gn)}.nb.hb:hover{border-color:var(--bl);color:var(--bl)}
-.nb.pg{background:var(--gn);border-color:var(--gn);color:#fff}.nb.pg:hover{background:#235c43}
-.nb.pb{background:var(--bl);border-color:var(--bl);color:#fff}.nb.pb:hover{background:#152d56}
-/* MODAL */
-.mov{position:fixed;inset:0;background:rgba(0,0,0,.52);display:flex;align-items:center;justify-content:center;z-index:200;backdrop-filter:blur(4px)}
-.mod{background:var(--sf);border-radius:16px;padding:30px;width:480px;max-width:92vw;box-shadow:var(--shl)}
-.modtit{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:var(--tx);margin-bottom:6px}
-.modsub{font-size:12.5px;color:var(--tx3);margin-bottom:22px;line-height:1.6}
-.ua{border:2px dashed var(--bd);border-radius:12px;padding:36px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:14px}
-.ua:hover,.ua.ov{border-color:var(--gn);background:var(--gl)}
-.ua.hbm:hover,.ua.hbm.ov{border-color:var(--bl);background:var(--bll)}
-.uaico{font-size:34px;margin-bottom:10px}
-.uatxt{font-size:13.5px;color:var(--tx2)}
-.uahnt{font-size:11.5px;color:var(--tx3);margin-top:3px}
-.mi{width:100%;padding:9px 13px;border:1.5px solid var(--bd);border-radius:8px;font-size:13.5px;color:var(--tx);background:var(--sf);margin-bottom:10px;font-family:'Inter',sans-serif}
-.mi:focus{outline:none;border-color:var(--gn)}
-.mi.hbm:focus{border-color:var(--bl)}
-.mact{display:flex;justify-content:flex-end;gap:9px;margin-top:18px}
-.bcnc{padding:9px 18px;border:1.5px solid var(--bd);border-radius:8px;background:transparent;color:var(--tx2);cursor:pointer;font-family:'Inter',sans-serif;font-size:13px}
-.bok{padding:9px 18px;border:none;border-radius:8px;color:#fff;cursor:pointer;font-family:'Inter',sans-serif;font-size:13px;font-weight:600}
-.bok.gk{background:var(--gn)}.bok.hb{background:var(--bl)}
-.bok:disabled{opacity:.5;cursor:not-allowed}
-.adi{display:flex;align-items:center;gap:9px;padding:9px 13px;background:var(--sf2);border-radius:8px;font-size:12.5px;color:var(--tx2);margin-bottom:6px}
-/* TOAST */
-.toast{position:fixed;bottom:28px;right:28px;background:#1a3d2b;color:#fff;padding:12px 20px;border-radius:10px;font-size:13px;font-weight:500;box-shadow:var(--shl);z-index:300;animation:su .3s ease}
-@keyframes su{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+:root {
+  --accent-gk: #2d6a4f;
+  --accent-hb: #1a3a6b;
+  --light-gk: #e8f5e9;
+  --light-hb: #e3f2fd;
+  --text: #1a1a1a;
+  --text2: #4a4a4a;
+  --text3: #888;
+  --surface: #fff;
+  --surface2: #f9f7f4;
+  --border: #e0ddd9;
+  --shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
 
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Inter', sans-serif; background: #faf8f5; color: var(--text); }
+.app { display: flex; height: 100vh; }
+.sidebar { width: 240px; background: var(--surface); border-right: 1px solid var(--border); overflow-y: auto; padding: 20px; }
+.sidebar::-webkit-scrollbar { width: 6px; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+.lesson-item { padding: 12px; border-radius: 8px; cursor: pointer; border-left: 3px solid transparent; transition: all 0.2s; margin-bottom: 6px; }
+.lesson-item:hover { background: var(--surface2); }
+.lesson-item.active { border-left-color: var(--accent-gk); background: var(--light-gk); }
+.lesson-item.active.hb { border-left-color: var(--accent-hb); background: var(--light-hb); }
+.lesson-title { font-size: 13px; font-weight: 600; color: var(--text); }
+.lesson-subtitle { font-size: 11px; color: var(--text3); margin-top: 2px; }
+.main { flex: 1; display: flex; flex-direction: column; }
+.header { background: linear-gradient(135deg, var(--accent-gk) 0%, var(--accent-hb) 100%); color: white; padding: 24px 40px; }
+.header-logo { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 700; margin-bottom: 4px; }
+.header-title { font-size: 13px; opacity: 0.9; }
+.content { flex: 1; overflow-y: auto; padding: 40px; }
+.home-section { text-align: center; padding: 60px 40px; }
+.home-title { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 700; margin-bottom: 8px; }
+.home-subtitle { font-size: 14px; color: var(--text3); margin-bottom: 50px; }
+.lang-cards { display: flex; gap: 30px; justify-content: center; flex-wrap: wrap; }
+.lang-card { width: 280px; border: 2px solid var(--border); border-radius: 12px; padding: 30px 24px; text-align: center; cursor: pointer; transition: all 0.3s; }
+.lang-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+.lang-card.gk { border-color: var(--accent-gk); }
+.lang-card.gk:hover { border-color: var(--accent-gk); background: var(--light-gk); }
+.lang-card.hb { border-color: var(--accent-hb); }
+.lang-card.hb:hover { border-color: var(--accent-hb); background: var(--light-hb); }
+.lang-symbol { font-family: 'Cormorant Garamond', serif; font-size: 48px; font-weight: 700; margin-bottom: 12px; }
+.lang-card.gk .lang-symbol { color: var(--accent-gk); }
+.lang-card.hb .lang-symbol { color: var(--accent-hb); }
+.lang-name { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; margin-bottom: 4px; color: var(--text); }
+.lang-desc { font-size: 12px; color: var(--text3); margin-bottom: 18px; }
+.lang-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--border); }
+.stat { text-align: center; }
+.stat-num { font-size: 18px; font-weight: 700; color: var(--text); }
+.stat-label { font-size: 10px; color: var(--text3); text-transform: uppercase; }
+.lesson-view { display: flex; flex-direction: column; }
+.lesson-header { margin-bottom: 30px; }
+.lesson-main-title { font-family: 'Cormorant Garamond', serif; font-size: 42px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.lesson-main-subtitle { font-family: 'Cormorant Garamond', serif; font-size: 16px; font-style: italic; color: var(--text3); margin-bottom: 20px; }
+.tabs { display: flex; gap: 2px; margin-bottom: 24px; border-bottom: 1px solid var(--border); }
+.tab { padding: 12px 20px; font-size: 13px; font-weight: 600; color: var(--text3); cursor: pointer; border: none; background: none; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.2s; }
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--accent-gk); border-bottom-color: var(--accent-gk); }
+.tab.active.hb { color: var(--accent-hb); border-bottom-color: var(--accent-hb); }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.content-text { font-size: 15px; line-height: 1.7; color: var(--text2); }
+.content-text h3 { margin: 24px 0 14px; font-size: 18px; font-weight: 700; color: var(--text); }
+.content-text p { margin-bottom: 14px; }
+.content-text ul, .content-text ol { margin-left: 20px; margin-bottom: 14px; }
+.content-text li { margin-bottom: 6px; }
+.content-text table { width: 100%; margin: 16px 0; border-collapse: collapse; border: 1px solid var(--border); }
+.content-text th, .content-text td { padding: 12px; text-align: left; border: 1px solid var(--border); }
+.content-text th { background: var(--surface2); font-weight: 700; }
+.tip-box { background: var(--light-gk); border-left: 4px solid var(--accent-gk); padding: 16px; border-radius: 8px; margin: 20px 0; font-size: 14px; }
+.tip-box.hb { background: var(--light-hb); border-left-color: var(--accent-hb); }
+.grammars-section { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); }
+.grammars-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text3); margin-bottom: 12px; }
+.grammar-item { display: flex; align-items: flex-start; gap: 8px; padding: 8px 0; font-size: 12px; color: var(--text2); }
+.grammar-bullet { width: 4px; height: 4px; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
+.grammar-base { font-weight: 600; padding: 2px 8px; border-radius: 4px; font-size: 10px; }
+.grammar-item.base .grammar-base { background: var(--light-gk); color: var(--accent-gk); }
+.grammar-item.hb.base .grammar-base { background: var(--light-hb); color: var(--accent-hb); }
+.nav { display: flex; justify-content: space-between; align-items: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); }
+.nav-btn { padding: 10px 18px; border: 1.5px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text2); cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.2s; }
+.nav-btn:hover { border-color: var(--accent-gk); color: var(--accent-gk); }
 </style>
-<script>
-
-const GK_GRAMMARS = [
-  {id:"bergmann",name:"Bergmann (2024)",short:"Bergmann",full:"Introdução ao Grego Bíblico",base:true,color:"#2d6a4f"},
-  {id:"rega",name:"Rega & Bergmann (2004)",short:"Rega",full:"Noções do Grego Bíblico: Gramática Fundamental",base:false,color:"#1d3557"},
-  {id:"dobson",name:"Dobson (1994)",short:"Dobson",full:"Aprenda o Grego do Novo Testamento",base:false,color:"#457b9d"},
-  {id:"chamberlain",name:"Chamberlain (1989)",short:"Chamberlain",full:"Gramática Exegética do Grego Neo-Testamentário",base:false,color:"#6d4c41"},
-  {id:"wallace",name:"Wallace (2009)",short:"Wallace",full:"Gramática Grega: Uma Sintaxe Exegética do NT",base:false,color:"#4a148c"},
-  {id:"koine",name:"Sousa (s.d.)",short:"Sousa",full:"Gramática de Grego Koinê",base:false,color:"#bf360c"},
-  {id:"freire",name:"Freire S.J. (7ª ed.)",short:"Freire",full:"Gramática Grega — António Freire S.J.",base:false,color:"#33691e"},
-];
-
-const HB_GRAMMARS = [
-  {id:"kelley",name:"Kelley (1998)",short:"Kelley",full:"Hebraico Bíblico: Uma Gramática Introdutória",base:true,color:"#1a3a6b"},
-  {id:"futato",name:"Futato (2010)",short:"Futato",full:"Introdução ao Hebraico Bíblico",base:false,color:"#1b5e20"},
-  {id:"ross",name:"Ross (2005)",short:"Ross",full:"Gramática do Hebraico Bíblico para Iniciantes",base:false,color:"#4a148c"},
-  {id:"gusso",name:"Gusso (2005)",short:"Gusso",full:"Gramática Instrumental do Hebraico",base:false,color:"#2e4057"},
-  {id:"mendes",name:"Mendes (s.d.)",short:"Mendes",full:"Noções de Hebraico Bíblico",base:false,color:"#bf360c"},
-  {id:"vita",name:"Vita & Akil (s.d.)",short:"Vita & Akil",full:"Noções Básicas de Hebraico Bíblico: Para Ler e Traduzir",base:false,color:"#6a0572"},
-];
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState } = React;
 
 const GK_LESSONS = [
-  {id:1,t:"Alfabeto",s:"Acentos e Outros Sinais",cat:"Fonética",cc:"#2d6a4f",top:["O alfabeto grego (24 letras)","Vogais, consoantes e ditongos","Os três acentos: agudo, grave e circunflexo","Espíritos suave e áspero","Sinais de pontuação gregos"],trm:["ἄλφα — alfa","βῆτα — beta","γάμμα — gama","δέλτα — delta","ἒψιλόν — épsilon","ζῆτα — zeta","ἦτα — eta","θῆτα — theta","ἰῶτα — iota","κάππα — kapa","λάμβδα — lambda","σῖγμα — sigma","ὦμέγα — ômega"],v:"Ἐν ἀρχῇ ἦν ὁ λόγος",tr:"No princípio era o Verbo (Jo 1.1)",rtl:false},
-  {id:2,t:"Verbos",s:"Presente do Indicativo",cat:"Morfologia Verbal",cc:"#1565c0",top:["Introdução ao verbo grego","Aspecto verbal: linear, pontual e resultante","Modo, voz, pessoa e número","Presente do indicativo ativo, médio e passivo","Seis usos do presente"],trm:["λέγω — digo","λύω — desato","εἰμί — sou","ἀκούω — ouço","γινώσκω — conheço","βαπτίζω — batizo","ἀκολουθέω — sigo"],v:"Τὰ πρόβατα τὰ ἐμὰ τῆς φωνῆς μου ἀκούουσιν",tr:"As minhas ovelhas ouvem a minha voz (Jo 10.27)",rtl:false},
-  {id:3,t:"Verbos",s:"Presente do Subjuntivo",cat:"Morfologia Verbal",cc:"#1565c0",top:["O modo subjuntivo: contingência e possibilidade","Presente do subjuntivo ativo e médio/passivo","Usos: propósito, exortação, condicional","Partículas ἵνα, ὅτι, ἐάν, μή"],trm:["ἵνα — para que","ὅτι — porque/que","ἐάν — se","μή — não (subjuntivo)","ὅταν — quando"],v:"ἵνα πιστεύητε ὅτι Ἰησοῦς ἐστιν ὁ Χριστός",tr:"para que creiais que Jesus é o Cristo (Jo 20.31)",rtl:false},
-  {id:4,t:"Verbos",s:"Futuro do Indicativo",cat:"Morfologia Verbal",cc:"#1565c0",top:["O futuro do indicativo","Formação: inserção do σ","Futuro ativo, médio e passivo (-θη-)","Usos: preditivo, imperativo e gnômico"],trm:["σ — sinal do futuro","λύσω — desatarei","λύσομαι — me desatarei","λυθήσομαι — serei desatado"],v:"καὶ γνώσεσθε τὴν ἀλήθειαν",tr:"e conhecereis a verdade (Jo 8.32)",rtl:false},
-  {id:5,t:"Artigos e Substantivos",s:"Casos e 2.ª Declinação",cat:"Morfologia Nominal",cc:"#6a1e55",top:["Os cinco casos gregos e suas funções","Nominativo, Genitivo, Dativo, Acusativo, Vocativo","O artigo definido grego: ὁ, ἡ, τό","2.ª declinação: masc. em -ος e neutros em -ον","Funções sintáticas de cada caso"],trm:["λόγος — palavra (m.)","ἔργον — obra (n.)","ὁ, ἡ, τό — o artigo","Nominativo — sujeito","Genitivo — posse","Dativo — obj. indireto","Acusativo — obj. direto","Vocativo — invocação"],v:"Ἐν ἀρχῇ ἦν ὁ λόγος, καὶ ὁ λόγος ἦν πρὸς τὸν θεόν",tr:"No princípio era o Verbo, e o Verbo estava com Deus (Jo 1.1)",rtl:false},
-  {id:6,t:"Substantivos",s:"1.ª Declinação",cat:"Morfologia Nominal",cc:"#6a1e55",top:["Substantivos da 1.ª declinação em -α","Femininos: -α puro, -α impuro e -η","Masculinos em -ας e -ης","Declinação completa com paradigmas","Comparação com a 2.ª declinação"],trm:["σοφία — sabedoria (f.)","ἀλήθεια — verdade (f.)","δόξα — glória (f.)","καρδία — coração (f.)","προφήτης — profeta (m.)","μαθητής — discípulo (m.)"],v:"ἡ ἀλήθεια ἐλευθερώσει ὑμᾶς",tr:"a verdade vos libertará (Jo 8.32)",rtl:false},
-  {id:7,t:"Adjetivos",s:"Introdução e Graus de Comparação",cat:"Morfologia Nominal",cc:"#6a1e55",top:["O adjetivo grego e sua concordância","Posição atributiva vs. predicativa","Flexão dos adjetivos da 1.ª e 2.ª declinação","Grau comparativo (-τερος) e superlativo (-τατος)"],trm:["ἀγαθός — bom","κακός — mau","μέγας — grande","πολύς — muito","πιστός — fiel","καλός — belo/bom"],v:"Πᾶν δένδρον ἀγαθὸν καρποὺς καλοὺς ποιεῖ",tr:"Toda árvore boa produz frutos bons (Mt 7.17)",rtl:false},
-  {id:8,t:"Preposições",s:"",cat:"Morfologia",cc:"#7b4f00",top:["Preposições com um caso (εἰς, ἐκ, ἐν, πρό, σύν)","Preposições com dois casos (διά, κατά, μετά, περί, ὑπό)","Preposições com três casos (ἐπί, παρά, πρός)","Elisão e assimilação de preposições"],trm:["εἰς + acus. — para/em","ἐκ + gen. — de/fora de","ἐν + dat. — em","ἀπό + gen. — de","πρός + acus. — para","διά + gen./acus.","κατά + gen./acus.","μετά + gen./acus."],v:"ἐγώ εἰμι ἡ ὁδὸς καὶ ἡ ἀλήθεια καὶ ἡ ζωή",tr:"Eu sou o caminho, a verdade e a vida (Jo 14.6)",rtl:false},
-  {id:9,t:"Pronomes",s:"Pessoais, Demonstrativos e Relativos",cat:"Morfologia Nominal",cc:"#6a1e55",top:["Pronomes pessoais: ἐγώ, σύ, αὐτός","Pronomes demonstrativos: οὗτος e ἐκεῖνος","Pronome relativo: ὅς, ἥ, ὅ e seus usos"],trm:["ἐγώ / ἡμεῖς — eu / nós","σύ / ὑμεῖς — tu / vós","αὐτός — ele/ela","οὗτος — este/esta","ἐκεῖνος — aquele/aquela","ὅς, ἥ, ὅ — que/o qual"],v:"ὅτι οὕτως ἠγάπησεν ὁ θεὸς τὸν κόσμον",tr:"porque assim amou Deus o mundo (Jo 3.16)",rtl:false},
-  {id:10,t:"Verbos",s:"Imperfeito do Indicativo",cat:"Morfologia Verbal",cc:"#1565c0",top:["O imperfeito: ação contínua no passado","Formação: aumento ε- + radical + desinências secundárias","Imperfeito ativo, médio e passivo","Usos: iterativo, incoativo, conativo","Verbos defectivos e depoentes"],trm:["ε- — aumento","ἔλεγον — eu dizia","ἔλυον — eu desatava","Depoente — forma média, sentido ativo","ἔρχομαι — venho","γίνομαι — torno-me"],v:"Καὶ ἐδίδασκεν αὐτοὺς ὡς ἐξουσίαν ἔχων",tr:"E ensinava-os como tendo autoridade (Mc 1.22)",rtl:false},
-  {id:11,t:"Verbos",s:"Aoristo: Introdução e 2.º Aoristo",cat:"Morfologia Verbal",cc:"#1565c0",top:["O aoristo: ação pontual","Diferença entre aoristo e imperfeito","Formação do 2.º aoristo (radical alterado)","2.º aoristo do indicativo e do subjuntivo","Lista dos principais verbos com 2.º aoristo"],trm:["Aoristo — ação pontual (●)","2.º aoristo — radical alterado","εἶπον — disse","ἦλθον — vim","εἶδον — vi","ἔλαβον — tomei","ἔγνων — conheci"],v:"Ὁ λόγος σὰρξ ἐγένετο",tr:"O Verbo se fez carne (Jo 1.14)",rtl:false},
-  {id:12,t:"Verbos",s:"1.º Aoristo",cat:"Morfologia Verbal",cc:"#1565c0",top:["1.º aoristo: aumento + radical + σα","1.º aoristo indicativo ativo e médio","1.º aoristo passivo com sufixo -θη-","1.º aoristo do subjuntivo"],trm:["-σα- — sinal do 1.º aoristo ativo/médio","-θη- — sinal do aoristo passivo","ἔλυσα — desatei","ἐλυσάμην — me desatei","ἐλύθην — fui desatado"],v:"Οὕτως γὰρ ἠγάπησεν ὁ θεὸς τὸν κόσμον",tr:"Porque assim amou Deus o mundo (Jo 3.16)",rtl:false},
-  {id:13,t:"Substantivos",s:"3.ª Declinação",cat:"Morfologia Nominal",cc:"#6a1e55",top:["Introdução à 3.ª declinação","Como identificar o radical pelo genitivo singular","Substantivos em oclusiva (labial, dental, gutural)","Substantivos em -ν, -ρ e neutros em -μα"],trm:["σάρξ, σαρκός — carne","αἰών, αἰῶνος — era","πατήρ, πατρός — pai","ἀνήρ, ἀνδρός — homem","γυνή, γυναικός — mulher","πνεῦμα, πνεύματος — espírito"],v:"Πνεῦμα ὁ θεός",tr:"Deus é espírito (Jo 4.24)",rtl:false},
-  {id:14,t:"Particípio",s:"Introdução e Particípio Presente",cat:"Morfologia Verbal",cc:"#1565c0",top:["O particípio: entre verbo e adjetivo/advérbio","Particípio presente ativo (λύων, λύουσα, λύον)","Particípio presente médio/passivo","Particípio futuro","Uso adverbial do particípio"],trm:["λύων / λύουσα / λύον — desatando","λυόμενος — sendo desatado","Particípio adverbial — como advérbio","Tempo relativo — anterior, simultâneo, posterior"],v:"Ὁ πιστεύων εἰς τὸν υἱὸν ἔχει ζωὴν αἰώνιον",tr:"Quem crê no Filho tem a vida eterna (Jo 3.36)",rtl:false},
-  {id:15,t:"Particípios",s:"Aoristo e Genitivo Absoluto",cat:"Morfologia Verbal",cc:"#1565c0",top:["Declinação do particípio aoristo ativo e passivo","Uso adjetivo e substantivado do particípio","O genitivo absoluto","O particípio e o tempo relativo"],trm:["λύσας — tendo desatado","λυθείς — tendo sido desatado","Genitivo absoluto — sujeito diferente","Particípio substantivado — com artigo"],v:"ἀκούσας δὲ ὁ Ἰησοῦς εἶπεν αὐτοῖς",tr:"Tendo ouvido, Jesus disse-lhes (Mc 2.17)",rtl:false},
-  {id:16,t:"Pronomes",s:"Interrogativos, Indefinidos, Reflexivos e Recíprocos",cat:"Morfologia Nominal",cc:"#6a1e55",top:["Pronome interrogativo τίς, τί","Pronome indefinido τις, τι","Distinção pelo acento: τίς vs. τις","Pronomes reflexivos e recíprocos"],trm:["τίς, τί — quem?/quê?","τις, τι — alguém/algo","ἐμαυτόν — a mim mesmo","σεαυτόν — a ti mesmo","ἑαυτόν — a si mesmo","ἀλλήλων — uns aos outros"],v:"Τίς ἐστιν ὁ πλησίον μου;",tr:"Quem é o meu próximo? (Lc 10.29)",rtl:false},
-  {id:17,t:"Verbos",s:"Perfeito e Mais-que-perfeito",cat:"Morfologia Verbal",cc:"#1565c0",top:["O perfeito: ação passada com resultado presente","Formação: reduplicação + radical + κ","Perfeito ativo e médio/passivo","O mais-que-perfeito","Usos exegéticos do perfeito no NT"],trm:["Reduplicação — sinal do perfeito","λέλυκα — tenho desatado","λέλυμαι — tenho sido desatado","γέγραπται — está escrito","πεπίστευκα — tenho crido"],v:"Τετέλεσται",tr:"Está consumado! (Jo 19.30)",rtl:false},
-  {id:18,t:"Verbos",s:"Modo Imperativo e Optativo",cat:"Morfologia Verbal",cc:"#1565c0",top:["O imperativo: vontade e comando","Imperativo presente e aoristo","Proibições: μή + imperativo/subjuntivo","O modo optativo e seus usos exegéticos"],trm:["λῦε! — desata! (pres.)","λῦσον! — desata! (aor.)","μὴ λύε — não desates (contínua)","μὴ λύσῃς — não desates (pontual)","μὴ γένοιτο — não aconteça! (optativo)"],v:"Ἀγαπᾶτε ἀλλήλους",tr:"Amai-vos uns aos outros (Jo 13.34)",rtl:false},
-  {id:19,t:"Verbos",s:"O Infinitivo",cat:"Morfologia Verbal",cc:"#1565c0",top:["O infinitivo: entre verbo e substantivo","Infinitivo presente, aoristo e perfeito","O infinitivo como complemento verbal","O infinitivo substantivado (com artigo)","Infinitivo com preposições: εἰς τό, ἐν τῷ, τοῦ"],trm:["λύειν — desatar (pres. ativo)","λύσαι — desatar (aor. ativo)","λυθῆναι — ser desatado","τοῦ + infinitivo — genitivo","εἰς τό + infinitivo — propósito"],v:"ἐγὼ δὲ ἦλθον ἵνα ζωὴν ἔχωσιν",tr:"mas eu vim para que tenham vida (Jo 10.10)",rtl:false},
-  {id:20,t:"Verbos",s:"Verbos Contraídos e Conjugação em -μι",cat:"Morfologia Verbal",cc:"#1565c0",top:["Verbos contraídos: -αω, -εω, -οω","Tabelas de contração","Conjugação em -μι: δίδωμι, τίθημι, ἀφίημι"],trm:["ἀγαπάω/ἀγαπῶ — amo","ποιέω/ποιῶ — faço","πληρόω/πληρῶ — cumpro","δίδωμι — dou","τίθημι — coloco","ἀφίημι — perdoo/deixo"],v:"Ἀγαπᾷς με;",tr:"Amas-me? (Jo 21.15)",rtl:false},
-  {id:21,t:"Usos do Artigo",s:"Numerais",cat:"Sintaxe",cc:"#b71c1c",top:["O artigo como pronome de 3.ª pessoa","O artigo como nominalizador","A Regra de Granville Sharp (TSKS)","Numerais cardinais e ordinais gregos"],trm:["Artigo nominalizador — transforma em substantivo","Regra de Sharp — uma pessoa, dois títulos","εἷς, μία, ἕν — um","δύο — dois","τρεῖς, τρία — três","δέκα — dez"],v:"εἷς κύριος, μία πίστις, ἓν βάπτισμα",tr:"um Senhor, uma fé, um batismo (Ef 4.5)",rtl:false},
-  {id:22,t:"Orações Condicionais",s:"Advérbios, Conjunções e Partículas",cat:"Sintaxe",cc:"#b71c1c",top:["Orações condicionais: prótase e apódose","1.ª classe: εἰ + indicativo (real)","2.ª classe: εἰ + optativo (irreal)","3.ª classe: ἐάν + subjuntivo (possível)","Principais conjunções e partículas do NT"],trm:["εἰ — se (1.ª e 2.ª classe)","ἐάν — se (3.ª classe)","οὖν — portanto","γάρ — porque","δέ — mas/e","ἀλλά — mas (forte)","μέν...δέ — por um lado...por outro"],v:"ἐὰν εἴπωμεν ὅτι ἁμαρτίαν οὐκ ἔχομεν, ἑαυτοὺς πλανῶμεν",tr:"Se dissermos que não temos pecado, enganamos a nós mesmos (1Jo 1.8)",rtl:false},
-  {id:23,t:"O Texto Original do NT",s:"Crítica Textual",cat:"Texto Bíblico",cc:"#4e342e",top:["A transmissão do texto neotestamentário","Tipos de manuscritos: papiros, unciais, minúsculos","Variantes textuais e seus tipos","Introdução à crítica textual","Textus Receptus, Texto Majoritário e textos críticos modernos"],trm:["Manuscrito (ms/mss)","Papiro — P⁴⁵, P⁴⁶, P⁶⁶","Uncial/Maiúsculo","Minúsculo","Apparatus criticus","Textus Receptus","BNT/NA28"],v:"πᾶσα γραφὴ θεόπνευστος",tr:"toda a Escritura é divinamente inspirada (2Tm 3.16)",rtl:false},
-  {id:24,t:"Como Continuar?",s:"Próximos Passos no Grego",cat:"Conclusão",cc:"#2e7d32",top:["Parabéns: você concluiu a introdução!","Como consolidar o vocabulário","Ferramentas: léxicos e concordâncias","Próximos passos: gramáticas intermediárias","Uso prático do grego na exegese e pregação"],trm:["BDAG/Danker — léxico grego-inglês","Análise morfológica","Interlinear grego-português","Exegese textual","Aplicação homilética"],v:"σπούδασον σεαυτὸν δόκιμον παραστῆσαι τῷ θεῷ",tr:"Procura apresentar-te a Deus aprovado (2Tm 2.15)",rtl:false},
+  {id:1, t:"Alfabeto Grego", s:"Acentos e Espíritos"},
+  {id:2, t:"Presente do Indicativo", s:"Aspecto Verbal"},
+  {id:3, t:"Presente do Subjuntivo", s:"Partícula ἵνα"},
+  {id:4, t:"Futuro do Indicativo", s:""},
+  {id:5, t:"Casos e 2ª Declinação", s:"Artigos e Substantivos"},
+  {id:6, t:"1ª Declinação", s:"Substantivos"},
+  {id:7, t:"Adjetivos", s:"Posição Atributiva/Predicativa"},
+  {id:8, t:"Preposições", s:""},
+  {id:9, t:"Pronomes", s:"Pessoais, Demonstrativos, Relativo"},
+  {id:10, t:"Imperfeito", s:"Verbos Depoentes"},
+  {id:11, t:"Aoristo: 2º Aoristo", s:"Introdução"},
+  {id:12, t:"1º Aoristo", s:"Ativo, Médio, Passivo"},
+  {id:13, t:"3ª Declinação", s:"Substantivos"},
+  {id:14, t:"Particípio Presente", s:""},
+  {id:15, t:"Particípios Aoristo", s:"Genitivo Absoluto"},
+  {id:16, t:"Pronomes Interrogativos", s:"Indefinidos, Reflexivos"},
+  {id:17, t:"Perfeito e Mais-que-Perfeito", s:""},
+  {id:18, t:"Imperativo e Optativo", s:""},
+  {id:19, t:"Infinitivo", s:""},
+  {id:20, t:"Verbos Contraídos", s:"Conjugação em -μι"},
+  {id:21, t:"Usos do Artigo", s:"Numerais"},
+  {id:22, t:"Orações Condicionais", s:"Advérbios, Conjunções"},
+  {id:23, t:"Crítica Textual", s:""},
+  {id:24, t:"Como Continuar?", s:"Próximos Passos"},
 ];
 
 const HB_LESSONS = [
-  {id:1,t:"O Alfabeto",s:"Primeiras Letras e Vogais",cat:"Fonética",cc:"#1a3a6b",top:["As 22 letras hebraicas e seus nomes","Letras com forma final especial (ם,ן,ף,ץ,ך)","Escrita da direita para a esquerda","Valor numérico das letras","Introdução aos sinais vocálicos (nikud)"],trm:["א — Alef (sem som)","ב/ב — Bet/Vet","ג — Guimel","ד — Dalet","ה — He","ו — Vav","ז — Zain","ח — Het","ט — Tet","י — Yod","כ/כ — Caf/Chaf","ל — Lamed","מ — Mem","נ — Nun","ס — Samech","ע — Ayin","פ — Pê","צ — Tzade","ק — Qof","ר — Resh","שׁ/שׂ — Shin/Sin","ת — Tav"],v:"בְּרֵאשִׁית בָּרָא אֱלֹהִים",tr:"No princípio criou Deus (Gn 1.1)",rtl:true},
-  {id:2,t:"As Vogais",s:"Sistema Vocálico Hebraico",cat:"Fonética",cc:"#1a3a6b",top:["As vogais longas: Qametz, Tsere, Hiriq-Yod, Holem, Shureq","As vogais breves: Patah, Segol, Hiriq, Qametz-Hatuf, Qibutz","As vogais reduzidas (Hateph)","Consoantes vocálicas (matres lectionis)","Classes de vogais: a, e, i, o, u"],trm:["ָ — Qametz (a longo)","ַ — Patah (a breve)","ֵ — Tsere (e longo)","ֶ — Segol (e breve)","ִ — Hiriq (i breve)","ֹ — Holem (o longo)","ָ — Qametz-Hatuf (o breve)","וּ — Shureq (u longo)","ֻ — Qibutz (u breve)"],v:"יְהוָה אֱלֹהֵינוּ יְהוָה אֶחָד",tr:"O Senhor nosso Deus, o Senhor é único (Dt 6.4)",rtl:true},
-  {id:3,t:"Sílabas, Shewa e Dagesh Forte",s:"Princípios Fonéticos Fundamentais",cat:"Fonética",cc:"#1a3a6b",top:["Formação e divisão das sílabas hebraicas","Sílabas abertas e fechadas","O Shewa: simples (sonoro e mudo) e composto","O Dagesh Forte: duplica a consoante","As letras BeGaDKeFaT e o Dagesh Fraco"],trm:["Sílaba aberta — termina em vogal","Sílaba fechada — termina em consoante","ְ — Shewa simples","Shewa sonoro — início de palavra/sílaba","Shewa mudo — fecha a sílaba","ּ — Dagesh Forte (duplica)","BeGaDKeFaT — ב,ג,ד,כ,פ,ת"],v:"שְׁמַע יִשְׂרָאֵל",tr:"Ouve, ó Israel (Dt 6.4)",rtl:true},
-  {id:4,t:"O Substantivo",s:"Formas Básicas: Gênero e Número",cat:"Morfologia Nominal",cc:"#4a148c",top:["Gênero: masculino e feminino","Masculino singular — forma de dicionário","Feminino singular — terminações ָה e ת","Masculino plural — terminação ִים","Feminino plural — terminação וֹת","O substantivo dual (-ַיִם)"],trm:["ִים — terminação masculino plural","וֹת — terminação feminino plural","ָה/ת — marca do feminino singular","סוּס — cavalo (m.sg.)","סוּסָה — égua (f.sg.)","סוּסִים — cavalos (m.pl.)","יָד — mão / יָדַיִם — mãos (dual)"],v:"בְּרֵאשִׁית בָּרָא אֱלֹהִים אֵת הַשָּׁמַיִם וְאֵת הָאָרֶץ",tr:"No princípio criou Deus os céus e a terra (Gn 1.1)",rtl:true},
-  {id:5,t:"Pronomes e o Artigo Definido",s:"",cat:"Morfologia Nominal",cc:"#4a148c",top:["Pronomes pessoais independentes (m. e f.)","O artigo definido hebraico: הַ (he + dagesh)","Variações do artigo antes de guturais","Pronomes demonstrativos: זֶה, זֹאת, אֵלֶּה","Pronomes interrogativos: מִי, מַה"],trm:["אֲנִי/אָנֹכִי — eu","אַתָּה — tu (m.)","הוּא — ele","הִיא — ela","הַ — artigo definido","הָ — antes de ה,ח,ע","הֶ — antes de א,ר,ע átonos","זֶה — este","זֹאת — esta","מִי — quem?","מַה — o quê?"],v:"הָאָרֶץ",tr:"A terra (com artigo definido)",rtl:true},
-  {id:6,t:"O Verbo: Qal Perfeito",s:"A Forma Completa",cat:"Morfologia Verbal",cc:"#7b3f00",top:["O sistema verbal hebraico: aspecto, não tempo","O Qal: voz ativa simples (68% do AT)","O Perfeito (Completo): ação vista como concluída","Conjugação do Qal Perfeito: sufixos pessoais","Vav Consecutivo com o Perfeito"],trm:["קָטַל — ele matou (3m sg., forma de dicionário)","קָטַלְתִּי — eu matei","קָטַלְתָּ — tu mataste","קָטַלְנוּ — nós matamos","קָטְלוּ — eles mataram","Vav Consecutivo + Perfeito → traduz no futuro"],v:"וַיַּרְא אֱלֹהִים כִּי טוֹב",tr:"E viu Deus que era bom (Gn 1.10)",rtl:true},
-  {id:7,t:"Frases com Verbos",s:"Sintaxe Verbal Básica",cat:"Sintaxe",cc:"#1b5e20",top:["Ordem das palavras no hebraico: Verbo-Sujeito-Objeto","A oração nominal (sem verbo)","Negação verbal: לֹא e אַל","O verbo הָיָה (ser/estar/tornar-se)","Concordância do verbo com o sujeito"],trm:["VSO — ordem básica da frase hebraica","Oração nominal — sem verbo explícito","לֹא — negação permanente","אַל — negação em comandos","הָיָה — ser/estar/tornar-se","אֵין — não há/não existe","יֵשׁ — há/existe"],v:"בְּרֵאשִׁית בָּרָא אֱלֹהִים",tr:"No princípio criou Deus (Gn 1.1) — observe a ordem VSO",rtl:true},
-  {id:8,t:"O Substantivo",s:"Mudanças Vocálicas",cat:"Morfologia Nominal",cc:"#4a148c",top:["Por que as vogais mudam ao acrescentar sufixos","Vogais estáveis vs. redutíveis","O padrão de redução vocálica","Substantivos irregulares frequentes","Mudanças nos plurais de substantivos comuns"],trm:["Vogal estável — não muda","Vogal redutível — vira shewa","דָּבָר — palavra / דְּבָרִים — palavras","מֶלֶךְ — rei / מְלָכִים — reis","בַּיִת — casa / בָּתִּים — casas","אִישׁ — homem / אֲנָשִׁים — homens","אִשָּׁה — mulher / נָשִׁים — mulheres"],v:"הַדְּבָרִים הָאֵלֶּה",tr:"Estas palavras (com artigo e demonstrativo)",rtl:true},
-  {id:9,t:"Preposições e a Conjunção Vav",s:"",cat:"Morfologia",cc:"#2e4057",top:["Preposições inseparáveis: בְּ, כְּ, לְ","Regras de vocalização das preposições inseparáveis","Preposição מִן e suas formas","Preposições separáveis: אֶל, עַל, עִם, עַד","O Vav Conjuntivo e suas variações"],trm:["בְּ — com, em, por","כְּ — como, conforme","לְ — para, a","מִן — de, a partir de","אֶל — para, em direção a","עַל — sobre","עִם — com","וְ — e (vav conjuntivo)","וּ — e (antes de ב,מ,פ)"],v:"בְּרֵאשִׁית",tr:"No princípio (בְּ = 'em' + רֵאשִׁית = 'princípio')",rtl:true},
-  {id:10,t:"O Adjetivo",s:"Uso Atributivo e Predicativo",cat:"Morfologia Nominal",cc:"#4a148c",top:["Adjetivos concordam em gênero e número","Uso atributivo: adjetivo APÓS o substantivo","Uso predicativo: adjetivo ANTES do substantivo","O adjetivo atributivo leva artigo quando o substantivo tem","Lista dos adjetivos mais frequentes do AT"],trm:["טוֹב — bom","גָּדוֹל — grande","קָטֹן — pequeno","חָכָם — sábio","חָזָק — forte","קָדוֹשׁ — santo","רַע — mau","עַם טוֹב — um bom povo (atributivo)","טוֹב עָם — um povo é bom (predicativo)"],v:"כִּי טוֹב",tr:"que era bom (predicativo — Gn 1.10)",rtl:true},
-  {id:11,t:"O Verbo: Qal Imperfeito",s:"A Forma Incompleta",cat:"Morfologia Verbal",cc:"#7b3f00",top:["O Imperfeito (Incompleto): ação inacabada/futura","Prefixos do imperfeito: א, ת, י, נ","Sufixos de gênero e número","Vav Consecutivo com o Imperfeito","Negação do imperfeito: לֹא e אַל"],trm:["יִקְטֹל — ele matará (3m sg.)","תִּקְטֹל — tu matarás (2m sg.)","אֶקְטֹל — eu matarei","נִקְטֹל — nós mataremos","יִקְטְלוּ — eles matarão","וַיִּקְטֹל — e ele matou (vav consec.)"],v:"שְׁמַע בְּנִי מוּסַר אָבִיךָ",tr:"Ouve, filho meu, a instrução de teu pai (Pv 1.8)",rtl:true},
-  {id:12,t:"Relações de Construto",s:"O Estado Construto Singular",cat:"Morfologia Nominal",cc:"#4a148c",top:["O que é o estado construto (semikut)","Expressar posse sem a preposição 'de'","Mudanças no masculino singular (forma igual ao abs.)","Feminino singular no construto: ָה → ַת","O substantivo no construto nunca tem artigo"],trm:["Estado absoluto — forma de dicionário","Estado construto — forma que indica posse","ָה → ַת — feminino singular no construto","דְּבַר יְהוָה — a palavra do Senhor","בֵּית הַמֶּלֶךְ — a casa do rei","תּוֹרַת יְהוָה — a lei do Senhor"],v:"דְּבַר יְהוָה",tr:"a palavra do Senhor",rtl:true},
-  {id:13,t:"Relações de Construto",s:"O Estado Construto Plural",cat:"Morfologia Nominal",cc:"#4a148c",top:["Masculino plural no construto: ִים → ֵי","Feminino plural no construto: sem mudança","Cadeia de construtos (mais de dois substantivos)","Exemplos bíblicos de construtos plurais","Substantivos irregulares no construto"],trm:["ִים → ֵי — masc. plural no construto","בְּנֵי יִשְׂרָאֵל — os filhos de Israel","מַלְכֵי יְהוּדָה — os reis de Judá","שִׁירֵי צִיּוֹן — os cânticos de Sião","אֱלֹהֵי יִשְׂרָאֵל — o Deus de Israel"],v:"בְּנֵי יִשְׂרָאֵל",tr:"os filhos de Israel",rtl:true},
-  {id:14,t:"Qal Completo e Incompleto",s:"Raízes Fracas — Parte 1",cat:"Morfologia Verbal",cc:"#7b3f00",top:["O que são verbos fracos","Verbos I-Gutural: preferência por shewa composto e vogal 'a'","Verbos II-Gutural: mudanças no meio do radical","Verbos III-Gutural: vogal patah antes da gutural final","Verbos III-Alef: o alef quiescente"],trm:["Pê Gutural — gutural na 1.ª consoante","Ayin Gutural — gutural na 2.ª consoante","Lamed Gutural — gutural na 3.ª consoante","עָמַד — estar de pé (I-Gutural)","שָׁמַע — ouvir (II-Gutural)","שָׁלַח — enviar (III-Gutural)","מָצָא — encontrar (III-Alef)"],v:"וַיִּשְׁמַע אֱלֹהִים",tr:"E ouviu Deus (Gn 30.22)",rtl:true},
-  {id:15,t:"Qal Completo e Incompleto",s:"Raízes I-Nun e III-He",cat:"Morfologia Verbal",cc:"#7b3f00",top:["Verbos I-Nun: assimilação do nun","Verbos III-He: o he final representa vogal","Formas do imperfeito dos verbos I-Nun","Formas do imperfeito dos verbos III-He","Verbos irregulares importantes: הָלַךְ, נָתַן, לָקַח"],trm:["Pê-Nun — nun se assimila","נָפַל — cair / יִפֹּל — ele cairá","נָתַן — dar / יִתֵּן — ele dará","Lamed-He — he final representa vogal","גָּלָה — revelar / גִּלָּה — ele revelou","בָּנָה — construir / יִבְנֶה — ele construirá"],v:"וַיִּתֵּן לָהֶם יוֹסֵף",tr:"E José lhes deu (Gn 47.17)",rtl:true},
-  {id:16,t:"Sufixos Possessivos",s:"Em Substantivos no Singular",cat:"Morfologia Nominal",cc:"#4a148c",top:["O que são sufixos pronominais em substantivos","Sufixos com substantivos masculinos singulares","Sufixos com substantivos femininos singulares","Alterações vocálicas ao acrescentar sufixos","Exemplos de sufixos nos Salmos e Pentateuco"],trm:["י- — meu/minha","ךָ- — teu (m.)","ךְ- — teu (f.)","וֹ- — dele","הָ- — dela","נוּ- — nosso","כֶם- — de vocês (m.)","הֶם- — deles","דְּבָרִי — minha palavra","תּוֹרָתְךָ — tua lei"],v:"תּוֹרָתְךָ שָׁעֲשֻׁעָי",tr:"Tua lei é o meu deleite (Sl 119.77)",rtl:true},
-  {id:17,t:"Pronomes Demonstrativos e Relativos",s:"",cat:"Morfologia Nominal",cc:"#4a148c",top:["Pronomes demonstrativos proximal (este) e distal (aquele)","Uso atributivo e predicativo dos demonstrativos","Pronome relativo אֲשֶׁר — o qual, que","O relativo שֶׁ prefixado à palavra","Pronomes relativos em frases do AT"],trm:["זֶה — este (m.sg.)","זֹאת — esta (f.sg.)","אֵלֶּה — estes/estas (pl.)","הַהוּא — aquele (m.sg.)","הַהִיא — aquela (f.sg.)","אֲשֶׁר — o qual, que (separado)","שֶׁ — que (prefixado)"],v:"הָאָרֶץ אֲשֶׁר נָתַן לָנוּ",tr:"a terra que nos deu (Nm 32.9)",rtl:true},
-  {id:18,t:"Qal Imperfeito",s:"Raízes I-Iod e I-Alef",cat:"Morfologia Verbal",cc:"#7b3f00",top:["Verbos I-Iod: o iod cai no imperfeito","Verbos I-Alef: o alef quiescente no imperfeito","Padrões do imperfeito em I-Iod e I-Alef","Verbos irregulares: יָלַד, יָשַׁב, יָרַד, יָדַע","Formas do imperfeito de הָיָה"],trm:["I-Iod — iod cai no imperfeito","יָשַׁב — habitar / יֵשֵׁב — ele habitará","יָצָא — sair / יֵצֵא — ele sairá","יָלַד — gerar / יֵלֵד — ele gerará","I-Alef — alef quiescente","אָמַר — dizer / יֹאמַר — ele dirá"],v:"וַיֹּאמֶר אֱלֹהִים",tr:"E disse Deus (Gn 1.3)",rtl:true},
-  {id:19,t:"Sufixos Possessivos",s:"Em Substantivos no Plural",cat:"Morfologia Nominal",cc:"#4a148c",top:["Sufixos com substantivos masculinos plurais","Sufixos com substantivos femininos plurais","Mudanças vocálicas nos plurais com sufixo","A forma base do plural para receber sufixos","Comparação: sufixos no singular vs. plural"],trm:["דְּבָרַי — minhas palavras","דְּבָרֶיךָ — tuas palavras","דְּבָרָיו — suas palavras","תּוֹרֹתַי — minhas leis","תּוֹרֹתֶיךָ — tuas leis","תּוֹרֹתָיו — suas leis"],v:"כִּי מִצְוֹתֶיךָ אָהָבְתִּי",tr:"pois os teus mandamentos amei (Sl 119.47)",rtl:true},
-  {id:20,t:"O Verbo: Qal Infinitivos",s:"Construto e Absoluto",cat:"Morfologia Verbal",cc:"#7b3f00",top:["O Infinitivo Construto: funções substantivas","O Infinitivo Absoluto: intensificação e ênfase","Prefixos לְ, בְּ, כְּ com o infinitivo construto","Sufixos pronominais no infinitivo","Vav Consecutivo com infinitivo"],trm:["לִקְטֹל — matar (inf. construto)","קָטוֹל — matar (inf. absoluto)","בְּלֶכְתּוֹ — no seu ir","לְדַעַת — para conhecer","קָטוֹל יִקְטֹל — ele com certeza matará (ênfase)","לִשְׁמֹר — guardar","לְאַהֲבָה — para amar"],v:"לְדַעַת חָכְמָה",tr:"para conhecer a sabedoria (Ec 1.17)",rtl:true},
-  {id:21,t:"O Verbo: Qal Particípio Ativo",s:"",cat:"Morfologia Verbal",cc:"#7b3f00",top:["O particípio: natureza verbal e nominal","Particípio ativo masculino: padrão קֹטֵל","Particípio ativo feminino e plural","Usos do particípio: substantivo, adjetivo e verbo","O particípio ativo como ação contínua no presente"],trm:["קֹטֵל — matando/o que mata (m.sg.)","קֹטֶלֶת — matando (f.sg.)","קֹטְלִים — matando (m.pl.)","שֹׁמֵר — guardando/guarda","הֹלֵךְ — andando/o que anda","יוֹדֵעַ — sabendo/o que sabe"],v:"קוֹל יְהוָה עֹז",tr:"A voz do Senhor é poderosa (Sl 29.4)",rtl:true},
-  {id:22,t:"Sufixos Pronominais",s:"Em Preposições",cat:"Morfologia Nominal",cc:"#4a148c",top:["Sufixos nas preposições inseparáveis: לְ, בְּ, כְּ","Sufixos na preposição אֶל","Sufixos na preposição עַל","Sufixos na preposição עִם","Sufixos na preposição מִן"],trm:["לִי — para mim","לְךָ — para ti","לוֹ — para ele","לָהּ — para ela","לָנוּ — para nós","לָהֶם — para eles","אֵלַי — a mim","עָלַי — sobre mim","עִמִּי — comigo","מִמֶּנִּי — de mim"],v:"לְךָ יְהוָה הַגְּדֻלָּה",tr:"A ti, Senhor, a grandeza (1Cr 29.11)",rtl:true},
-  {id:23,t:"Os Troncos Verbais",s:"Piel, Pual, Hitpael, Hifil e Hofal",cat:"Morfologia Verbal",cc:"#7b3f00",top:["As 7 construções verbais (binyanim)","Pi'el: intensivo ativo — duplicação da 2.ª radical","Pu'al: intensivo passivo","Hitpa'el: reflexivo/recíproco intensivo","Hif'il: causativo ativo — fazer alguém fazer","Hof'al: causativo passivo"],trm:["Pi'el — dagesh forte na 2.ª radical","קִטֵּל — ele matou repetidamente","Pu'al — voz passiva do Pi'el","Hitpa'el — מִתְ + radical","הִתְקַדֵּשׁ — santificou-se","Hif'il — הִ + radical + י","הִמְשִׁיל — fez governar","Hof'al — passivo do Hif'il"],v:"וַיִּתְהַלֵּךְ חֲנוֹךְ אֶת הָאֱלֹהִים",tr:"E andou Enoque com Deus (Gn 5.22)",rtl:true},
-  {id:24,t:"Como Continuar?",s:"Próximos Passos no Hebraico",cat:"Conclusão",cc:"#1a3a6b",top:["Parabéns: você concluiu a introdução!","Como consolidar o vocabulário do AT","Ferramentas: léxicos, dicionários e concordâncias","Próximos passos: gramáticas intermediárias","Aplicação do hebraico na exegese e pregação"],trm:["BDB — Brown-Driver-Briggs (léxico)","HALOT — Hebrew Aramaic Lexicon","BHS — Biblia Hebraica Stuttgartensia","Concordância do AT","Análise morfológica","שָׁלוֹם — shalom (paz, completude)"],v:"פִּתְחוּ לִי שַׁעֲרֵי צֶדֶק",tr:"Abri-me as portas da justiça (Sl 118.19)",rtl:true},
+  {id:1, t:"O Alfabeto", s:"22 letras hebraicas"},
+  {id:2, t:"As Vogais", s:"Sistema massorético"},
+  {id:3, t:"Sílabas, Shewa e Dagesh", s:""},
+  {id:4, t:"O Substantivo", s:"Gênero e Número"},
+  {id:5, t:"Pronomes e Artigo", s:""},
+  {id:6, t:"Qal Perfeito", s:""},
+  {id:7, t:"Sintaxe Verbal Básica", s:""},
+  {id:8, t:"Mudanças Vocálicas", s:"Substantivos"},
+  {id:9, t:"Preposições e Waw", s:""},
+  {id:10, t:"O Adjetivo", s:""},
+  {id:11, t:"Qal Imperfeito", s:""},
+  {id:12, t:"Construto Singular", s:""},
+  {id:13, t:"Construto Plural", s:""},
+  {id:14, t:"Verbos Fracos — Guturais", s:""},
+  {id:15, t:"Verbos I-Nun e III-He", s:""},
+  {id:16, t:"Sufixos Pronominais", s:"Singular"},
+  {id:17, t:"Demonstrativos e Relativo", s:""},
+  {id:18, t:"Verbos I-Iod e I-Alef", s:""},
+  {id:19, t:"Sufixos Pronominais", s:"Plural"},
+  {id:20, t:"Qal Infinitivo", s:""},
+  {id:21, t:"Qal Particípio Ativo", s:""},
+  {id:22, t:"Sufixos em Preposições", s:""},
+  {id:23, t:"Os Troncos Verbais", s:"Binyanim"},
+  {id:24, t:"Como Continuar?", s:"Próximos Passos"},
 ];
 
+const GK_GRAMMARS = [
+  {name:"Bergmann (2024)", isBase:true},
+  {name:"Rega & Bergmann (2004)", isBase:false},
+  {name:"Dobson (1994)", isBase:false},
+  {name:"Chamberlain (1989)", isBase:false},
+  {name:"Wallace (2009)", isBase:false},
+  {name:"Sousa (s.d.)", isBase:false},
+  {name:"Freire S.J. (7ª ed.)", isBase:false},
+];
 
-function SearchResults({results,onSelect}){
-  const ac=results.length>0&&results[0].lang==='greek'?'var(--gn)':'var(--bl)';
-  return(
-    <div style={{flex:1,overflow:'auto',padding:'28px 40px'}}>
-      <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:28,fontWeight:700,color:'var(--tx)',marginBottom:4}}>
-        Resultados da Pesquisa
-      </div>
-      <div style={{fontSize:13,color:'var(--tx3)',marginBottom:22}}>{results.length} lição(ões) encontrada(s)</div>
-      {results.length===0&&<div style={{color:'var(--tx3)',fontSize:14}}>Nenhum resultado encontrado. Tente outros termos.</div>}
-      {results.map((r,i)=>(
-        <div key={i} onClick={()=>onSelect(r.lang,r.lesson)}
-          style={{background:'var(--sf)',border:'1px solid var(--bd)',borderRadius:12,padding:18,marginBottom:12,cursor:'pointer',transition:'all .2s'}}
-          onMouseEnter={e=>{e.currentTarget.style.boxShadow='var(--sh)';e.currentTarget.style.borderColor=r.lang==='greek'?'var(--gn)':'var(--bl)';}}
-          onMouseLeave={e=>{e.currentTarget.style.boxShadow='';e.currentTarget.style.borderColor='var(--bd)';}}>
-          <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:8}}>
-            <span style={{fontSize:11,fontWeight:700,padding:'2px 8px',borderRadius:8,background:r.lang==='greek'?'var(--gl)':'var(--bll)',color:r.lang==='greek'?'var(--gn)':'var(--bl)'}}>
-              {r.lang==='greek'?'Grego NT':'Hebraico AT'}
-            </span>
-            <span style={{fontSize:13,fontWeight:600,color:'var(--tx)'}}>Lição {r.lesson.id} — {r.lesson.t}</span>
-            {r.lesson.s&&<span style={{fontSize:11,color:'var(--tx3)'}}>{r.lesson.s}</span>}
-          </div>
-          {r.hits.map((h,j)=>(
-            <div key={j} style={{display:'flex',gap:8,marginBottom:4}}>
-              <span style={{fontSize:10,fontWeight:700,color:'var(--tx3)',background:'var(--sf2)',borderRadius:4,padding:'1px 6px',flexShrink:0,alignSelf:'flex-start',marginTop:2}}>{h.src}</span>
-              <span style={{fontSize:12.5,color:'var(--tx2)',lineHeight:1.5}}>{h.text}</span>
+const HB_GRAMMARS = [
+  {name:"Kelley (1998)", isBase:true},
+  {name:"Futato (2010)", isBase:false},
+  {name:"Ross (2005)", isBase:false},
+  {name:"Gusso (2005)", isBase:false},
+  {name:"Mendes (s.d.)", isBase:false},
+  {name:"Vita & Akil (s.d.)", isBase:false},
+];
+
+function App() {
+  const [view, setView] = useState('home');
+  const [lang, setLang] = useState(null);
+  const [lesson, setLesson] = useState(null);
+
+  const lessons = lang === 'gk' ? GK_LESSONS : HB_LESSONS;
+  const grammars = lang === 'gk' ? GK_GRAMMARS : HB_GRAMMARS;
+  const accent = lang === 'gk' ? 'var(--accent-gk)' : 'var(--accent-hb)';
+
+  const selectLang = (l) => {
+    setLang(l);
+    setView('lessons');
+    setLesson(null);
+  };
+
+  const selectLesson = (id) => {
+    setLesson(id);
+    setView('lesson');
+  };
+
+  return (
+    <div className="app">
+      {view !== 'home' && (
+        <div className="sidebar">
+          {lessons.map(l => (
+            <div 
+              key={l.id}
+              className={`lesson-item ${lang === 'hb' ? 'hb' : ''} ${lesson === l.id ? 'active' : ''}`}
+              onClick={() => selectLesson(l.id)}
+            >
+              <div className="lesson-title">Lição {l.id}</div>
+              <div className="lesson-subtitle">{l.t}</div>
             </div>
           ))}
         </div>
-      ))}
-    </div>
-  );
-}
-const {useState,useEffect,useRef,useCallback}=React;
+      )}
 
-</script>
-<script type="text/babel">
-function App(){
-  const [lang,setLang]=useState(null);
-  const [lesson,setLesson]=useState(null);
-  const [tab,setTab]=useState("conteudo");
-  const [aiC,setAiC]=useState({});
-  const [quizD,setQuizD]=useState({});
-  const [ldC,setLdC]=useState(false);
-  const [ldQ,setLdQ]=useState(false);
-  const [ans,setAns]=useState({});
-  const [fin,setFin]=useState({});
-  const [gkDone,setGkDone]=useState(()=>{try{return JSON.parse(localStorage.getItem("gk_done")||"[]")}catch{return[]}});
-  const [hbDone,setHbDone]=useState(()=>{try{return JSON.parse(localStorage.getItem("hb_done")||"[]")}catch{return[]}});
-  const [gkCust,setGkCust]=useState(()=>{try{return JSON.parse(localStorage.getItem("gk_cust")||"[]")}catch{return[]}});
-  const [hbCust,setHbCust]=useState(()=>{try{return JSON.parse(localStorage.getItem("hb_cust")||"[]")}catch{return[]}});
-  const [showUp,setShowUp]=useState(false);
-  const [upFile,setUpFile]=useState(null);
-  const [upMeta,setUpMeta]=useState({a:"",t:"",y:""});
-  const [drag,setDrag]=useState(false);
-  const [toast,setToast]=useState(null);
-  const [search,setSearch]=useState('');
-  const [searchResults,setSearchResults]=useState(null);
-
-  const doSearch=(q)=>{
-    if(!q.trim()){setSearchResults(null);return;}
-    const term=q.toLowerCase();
-    const results=[];
-    const langs=[['greek','gk',GK_LESSONS],['hebrew','hb',HB_LESSONS]];
-    langs.forEach(([lng,key,lsns])=>{
-      lsns.forEach(l=>{
-        const ck=String(l.id);
-        const cd=ALL_CONTENT[key]?.[ck];
-        const hits=[];
-        // search in topics
-        l.top.forEach(t=>{if(t.toLowerCase().includes(term))hits.push({src:'Tópico',text:t});});
-        // search in terms
-        l.trm.forEach(t=>{if(t.toLowerCase().includes(term))hits.push({src:'Vocabulário',text:t});});
-        // search in content
-        if(cd?.c){
-          const plain=cd.c.replace(/<[^>]+>/g,' ').replace(/\s+/g,' ');
-          const idx=plain.toLowerCase().indexOf(term);
-          if(idx>=0)hits.push({src:'Conteúdo',text:plain.slice(Math.max(0,idx-60),idx+120).trim()+'…'});
-        }
-        if(hits.length)results.push({lang:lng,lesson:l,hits:hits.slice(0,3)});
-      });
-    });
-    setSearchResults(results);
-  };
-
-  const fRef=useRef(null);
-
-  useEffect(()=>{try{localStorage.setItem("gk_done",JSON.stringify(gkDone))}catch{}},[gkDone]);
-  useEffect(()=>{try{localStorage.setItem("hb_done",JSON.stringify(hbDone))}catch{}},[hbDone]);
-  useEffect(()=>{try{localStorage.setItem("gk_cust",JSON.stringify(gkCust))}catch{}},[gkCust]);
-  useEffect(()=>{try{localStorage.setItem("hb_cust",JSON.stringify(hbCust))}catch{}},[hbCust]);
-
-  const isG=lang==="greek";
-  const lessons=isG?GK_LESSONS:HB_LESSONS;
-  const done=isG?gkDone:hbDone;
-  const setDone=isG?setGkDone:setHbDone;
-  const builtG=isG?GK_GRAMMARS:HB_GRAMMARS;
-  const custG=isG?gkCust:hbCust;
-  const setCustG=isG?setGkCust:setHbCust;
-  const allG=[...builtG,...custG];
-  const ac=isG?"gk":"hb";
-  const acv=isG?"var(--gn)":"var(--bl)";
-  const isDone=lesson?done.includes(lesson.id):false;
-  const prog=Math.round((done.length/24)*100);
-
-  const showT=(m)=>{setToast(m);setTimeout(()=>setToast(null),3000);};
-  const markDone=(id)=>setDone(p=>p.includes(id)?p.filter(x=>x!==id):[...p,id]);
-
-  const genC=useCallback(async(l)=>{
-    const k=`${lang}_c_${l.id}`;
-    if(aiC[k]) return;
-    const langKey=isG?'gk':'hb';
-    const lesson=ALL_CONTENT[langKey]?.[String(l.id)];
-    if(lesson?.c){setAiC(p=>({...p,[k]:lesson.c}));return;}
-    setLdC(true);
-    // fallback placeholder
-    setAiC(p=>({...p,[k]:"<p style='color:var(--tx3)'>Conteúdo não disponível offline.</p>"}));
-    setLdC(false);
-    // original below replaced:
-    if(false){
-    const k=`${lang}_c_${l.id}`;
-    if(aiC[k]) return;
-    setLdC(true);
-    const gList=allG.filter(g=>!g.base).map(g=>`- ${g.full} (${g.short})`).join("\n");
-    const lname=isG?"Grego do Novo Testamento":"Hebraico Bíblico";
-    const base=isG?"Bergmann (2024) — Introdução ao Grego Bíblico":"Kelley (1998) — Hebraico Bíblico: Uma Gramática Introdutória";
-    const citColors=isG
-      ?"Rega=#1d3557,Dobson=#457b9d,Chamberlain=#6d4c41,Wallace=#4a148c,Sousa=#bf360c,Freire=#33691e"
-      :"Futato=#1b5e20,Ross=#4a148c,Gusso=#2e4057,Mendes=#bf360c,Vita&Akil=#6a0572";
-
-    const prompt=`Você é um professor especialista em ${lname} em um seminário teológico brasileiro.
-Crie uma explica{String.fromCharCode(231)}{String.fromCharCode(227)}o did{String.fromCharCode(225)}tica, clara e profunda da LI{String.fromCharCode(199)}{String.fromCharCode(195)}O ${l.id}: "${l.t}${l.s?" {String.fromCharCode(8212)} "+l.s:""}".
-Categoria: ${l.cat}
-
-GRAM{String.fromCharCode(193)}TICA BASE (siga rigorosamente sua estrutura e sequ{String.fromCharCode(234)}ncia):
-${base}
-
-T{String.fromCharCode(211)}PICOS A COBRIR (em ordem):
-${l.top.map((t,i)=>`${i+1}. ${t}`).join("\n")}
-
-TERMOS-CHAVE: ${l.trm.join(", ")}
-
-GRAM{String.fromCharCode(193)}TICAS COMPLEMENTARES (cite quando enriquecerem a explica{String.fromCharCode(231)}{String.fromCharCode(227)}o):
-${gList}
-
-INSTRU{String.fromCharCode(199)}{String.fromCharCode(213)}ES DE FORMATA{String.fromCharCode(199)}{String.fromCharCode(195)}O {String.fromCharCode(8212)} responda APENAS com HTML limpo:
-{String.fromCharCode(8226)} <h3> para se{String.fromCharCode(231)}{String.fromCharCode(245)}es principais
-{String.fromCharCode(8226)} <h4> para subse{String.fromCharCode(231)}{String.fromCharCode(245)}es
-{String.fromCharCode(8226)} <p> para par{String.fromCharCode(225)}grafos
-{String.fromCharCode(8226)} <span class="lw ${ac}">palavra</span> para palavras na l{String.fromCharCode(237)}ngua original inline
-{String.fromCharCode(8226)} <div class="tip${isG?"":" bl"}">{"\u1f4a1"} dica</div> para dicas importantes
-{String.fromCharCode(8226)} <div class="warn">{String.fromCharCode(9888)}{String.fromCharCode(65039)} aten{String.fromCharCode(231)}{String.fromCharCode(227)}o</div> para alertas
-{String.fromCharCode(8226)} <table> com <th> e <td> para paradigmas e tabelas
-{String.fromCharCode(8226)} Para citar gram{String.fromCharCode(225)}tica complementar: <span class="cit"><span class="citd" style="background:COR"></span> Autor, Obra</span>
-  Cores: ${citColors}
-{String.fromCharCode(8226)} Inclua se{String.fromCharCode(231)}{String.fromCharCode(227)}o final "Aplicação Exegética" com exemplo pr{String.fromCharCode(225)}tico do texto b{String.fromCharCode(237)}blico
-{String.fromCharCode(8226)} Linguagem acess{String.fromCharCode(237)}vel para seminaristas brasileiros iniciantes
-{String.fromCharCode(8226)} Profundidade: aula de 45{String.fromCharCode(8211)}60 minutos
-{String.fromCharCode(8226)} Comece diretamente com <h3>`;
-
-    try{
-      const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:3000,messages:[{role:"user",content:prompt}]})});
-      const d=await r.json();
-      const txt=d.content?.map(b=>b.text||"").join("")||"<p style='color:red'>Erro ao gerar conteúdo.</p>";
-      setAiC(p=>({...p,[k]:txt}));
-    }catch{setAiC(p=>({...p,[k]:"<p style='color:red'>Erro de conexão.</p>"}))}
-    setLdC(false);
-  }},[aiC,allG,lang,isG]);
-
-  const genQ=useCallback(async(l)=>{
-    const k=`${lang}_q_${l.id}`;
-    if(quizD[k]) return;
-    const langKey=isG?'gk':'hb';
-    const lesson=ALL_CONTENT[langKey]?.[String(l.id)];
-    if(lesson?.q?.length){setQuizD(p=>({...p,[k]:lesson.q}));return;}
-    setLdQ(true);
-    setQuizD(p=>({...p,[k]:[]}));
-    setLdQ(false);
-    if(false){
-    const k=`${lang}_q_${l.id}`;
-    if(quizD[k]) return;
-    setLdQ(true);
-    const lname=isG?"Grego do Novo Testamento":"Hebraico Bíblico";
-    const prompt=`Crie 8 questões avaliativas sobre LIÇÃO ${l.id} de ${lname}: "${l.t}${l.s?" — "+l.s:""}".
-T{String.fromCharCode(243)}picos: ${l.top.join("; ")}
-Termos: ${l.trm.join(", ")}
-
-REGRAS:
-- Quest{String.fromCharCode(245)}es variadas: identifica{String.fromCharCode(231)}{String.fromCharCode(227)}o, tradu{String.fromCharCode(231)}{String.fromCharCode(227)}o, an{String.fromCharCode(225)}lise gramatical, aplica{String.fromCharCode(231)}{String.fromCharCode(227)}o b{String.fromCharCode(237)}blica
-- Use caracteres ${isG?"gregos":"hebraicos"} reais nas quest{String.fromCharCode(245)}es quando relevante
-- 4 alternativas (A,B,C,D) {String.fromCharCode(8212)} apenas uma correta
-- Feedback explicativo claro para cada quest{String.fromCharCode(227)}o
-- Dificuldade progressiva: 1-3 b{String.fromCharCode(225)}sicas, 4-6 intermedi{String.fromCharCode(225)}rias, 7-8 avan{String.fromCharCode(231)}adas
-
-Responda SOMENTE com JSON puro (sem markdown):
-[{"id":1,"question":"texto","options":["A","B","C","D"],"correct":0,"feedback":{"correct":"explicação","incorrect":"explicação"}}]`;
-
-    try{
-      const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:2500,messages:[{role:"user",content:prompt}]})});
-      const d=await r.json();
-      const raw=d.content?.map(b=>b.text||"").join("")||"[]";
-      setQuizD(p=>({...p,[k]:JSON.parse(raw.replace(/```json|```/g,"").trim())}));
-    }catch{setQuizD(p=>({...p,[k]:[]}))}
-    setLdQ(false);
-  }},[quizD,lang,isG]);
-
-  useEffect(()=>{
-    if(!lesson||!lang) return;
-    if(tab==="conteudo") genC(lesson);
-    if(tab==="atividades") genQ(lesson);
-  },[lesson,tab,lang]);
-
-  const answer=(lid,qid,opt)=>{
-    const k=`${lang}_${lid}_${qid}`;
-    if(ans[k]!==undefined) return;
-    setAns(p=>({...p,[k]:opt}));
-  };
-  const finishQ=(lid)=>{setFin(p=>({...p,[`${lang}_${lid}`]:true}));markDone(lid);};
-  const resetQ=(lid)=>{
-    const qk=`${lang}_q_${lid}`;
-    const na={...ans};
-    Object.keys(na).filter(k=>k.startsWith(`${lang}_${lid}_`)).forEach(k=>delete na[k]);
-    setAns(na);setFin(p=>({...p,[`${lang}_${lid}`]:false}));
-    setQuizD(p=>{const n={...p};delete n[qk];return n;});
-  };
-
-  const handleFile=(f)=>{if(f&&f.type==="application/pdf") setUpFile(f);};
-  const addGrammar=()=>{
-    if(!upFile||!upMeta.a||!upMeta.t) return;
-    const colors=["#1b5e20","#0d47a1","#4a148c","#bf360c","#e65100","#880e4f","#4e342e"];
-    const color=colors[custG.length%colors.length];
-    const g={id:`cg_${Date.now()}`,name:`${upMeta.a} (${upMeta.y||"s.d."})`,short:upMeta.a.split(/\s+/).pop(),full:upMeta.t,base:false,color,isCustom:true};
-    setCustG(p=>[...p,g]);
-    setAiC({});setQuizD({});
-    setUpFile(null);setUpMeta({a:"",t:"",y:""});
-    setShowUp(false);
-    showT(`"${upMeta.t.slice(0,35)}…" adicionada com sucesso!`);
-  };
-
-  // HOME
-  const Home=()=>(
-    <div className="home">
-      <div className="home-lg"><span className="gk">{"\u0395\u03bb"}</span><span className="sep">{String.fromCharCode(183)}</span><span className="hb">{"\u05e2\u05d1"}</span></div>
-      <div className="home-tit">L{String.fromCharCode(237)}nguas B{String.fromCharCode(237)}blicas {String.fromCharCode(8212)} Semin{String.fromCharCode(225)}rio</div>
-      <div className="home-sub">Estudo integrado de Grego do NT e Hebraico B{String.fromCharCode(237)}blico com m{String.fromCharCode(250)}ltiplas gram{String.fromCharCode(225)}ticas</div>
-      <div className="home-cards">
-        {[
-          {key:"greek",sym:"Ελληνικά",nm:"Grego do NT",desc:`24 lições · Bergmann (base) + ${GK_GRAMMARS.length-1+gkCust.length} gramáticas complementares`,done:gkDone.length,gr:GK_GRAMMARS.length+gkCust.length},
-          {key:"hebrew",sym:"עִבְרִית",nm:"Hebraico Bíblico",desc:`24 lições · Kelley (base) + ${HB_GRAMMARS.length-1+hbCust.length} gramáticas complementares`,done:hbDone.length,gr:HB_GRAMMARS.length+hbCust.length},
-        ].map(c=>(
-          <div key={c.key} className={`lcard ${c.key==="greek"?"gk":"hb"}`} onClick={()=>{setLang(c.key);setLesson(null);}}>
-            <span className={`lc-sym ${c.key==="greek"?"gk":"hb"}`}>{c.sym}</span>
-            <div className="lc-name">{c.nm}</div>
-            <div className="lc-desc">{c.desc}</div>
-            <div className="lc-sts">
-              {[["24","Lições"],[c.done.toString(),"Concluídas"],[c.gr.toString(),"Gramáticas"]].map(([n,l])=>(
-                <div key={l}><div className={`lc-sn ${c.key==="greek"?"gk":"hb"}`}>{n}</div><div className="lc-sl">{l}</div></div>
-              ))}
+      <div className="main">
+        {view !== 'home' && (
+          <div className="header">
+            <div className="header-logo">
+              {lang === 'gk' ? 'Ἑλ · ον' : 'עב'}
             </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-
-  // LANG HOME
-  const LangHome=()=>(
-    <div>
-      <div style={{marginBottom:28}}>
-        <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:36,fontWeight:700,color:"var(--tx)",marginBottom:4}}>
-          {isG?"Grego do Novo Testamento":"Hebraico Bíblico"}
-        </div>
-        <div style={{fontSize:13,color:"var(--tx3)",marginBottom:20}}>
-          {isG?`Bergmann (base) · ${allG.length} gramáticas · ${gkDone.length}/24 concluídas`
-              :`Kelley (base) · ${allG.length} gramáticas · ${hbDone.length}/24 concluídas`}
-        </div>
-      </div>
-      <div className="lgrid">
-        {lessons.map(l=>(
-          <div key={l.id} className="lcard-sm" onClick={()=>{setLesson(l);setTab("conteudo");}}>
-            <div style={{position:"absolute",left:0,top:0,bottom:0,width:3,background:acv,borderRadius:"3px 0 0 3px"}}/>
-            <div style={{fontSize:10,color:"var(--tx3)",marginBottom:3,fontWeight:500}}>Li{String.fromCharCode(231)}{String.fromCharCode(227)}o {l.id} {done.includes(l.id)?"✓":""}</div>
-            <div style={{fontSize:13,fontWeight:600,color:"var(--tx)",marginBottom:2}}>{l.t}</div>
-            <div style={{fontSize:10.5,color:"var(--tx3)",lineHeight:1.3}}>{l.s||l.top[0]}</div>
-            <div style={{fontSize:10,marginTop:7,fontWeight:600,color:acv}}>{l.cat}</div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-
-  // LESSON VIEW
-  const LessonView=()=>{
-    if(!lesson) return null;
-    const l=lesson;
-    const ck=`${lang}_c_${l.id}`;
-    const qk=`${lang}_q_${l.id}`;
-    const qs=quizD[qk]||[];
-    const allAns=qs.length>0&&qs.every(q=>ans[`${lang}_${l.id}_${q.id}`]!==undefined);
-    const isFin=!!fin[`${lang}_${l.id}`];
-    const prev=lessons.find(x=>x.id===l.id-1);
-    const next=lessons.find(x=>x.id===l.id+1);
-    return (
-      <div>
-        <div className="lhdr">
-          <div className="bc">
-            <span className={`bcl ${ac}`} onClick={()=>setLesson(null)}>In{String.fromCharCode(237)}cio</span>&nbsp;{String.fromCharCode(8594)}&nbsp;
-            <span className={`bcl ${ac}`} onClick={()=>setLesson(null)}>{isG?"Grego NT":"Hebraico AT"}</span>&nbsp;{String.fromCharCode(8594)}&nbsp;
-            <span style={{color:"var(--tx3)"}}>Li{String.fromCharCode(231)}{String.fromCharCode(227)}o {l.id}</span>
-          </div>
-          <div className={`lbadge b${ac[0]}`}>Li{String.fromCharCode(231)}{String.fromCharCode(227)}o {l.id} de 24</div>
-          <div className="ltitle">{l.t}</div>
-          {l.s&&<div className="lsubt">{l.s}</div>}
-          <div className="lmeta">
-            <div className="cbadge" style={{background:l.cc||acv}}>{l.cat}</div>
-            <button className={`done-btn ${ac} ${isDone?"done":""}`} onClick={()=>markDone(l.id)}>
-              {isDone?"✓ Concluída":"Marcar como concluída"}
-            </button>
-          </div>
-        </div>
-
-        <div className="vbox">
-          <div className="vlbl">Vers{String.fromCharCode(237)}culo da Li{String.fromCharCode(231)}{String.fromCharCode(227)}o</div>
-          <div className={`vtext${l.rtl?" rtl":""}`}>{l.v}</div>
-          <div className="vtrans">{l.tr}</div>
-        </div>
-
-        <div className="tabs">
-          {[["visao","Visão Geral"],["conteudo","Conteúdo"],["vocabulario","Vocabulário"],["atividades","Atividades"]].map(([id,lbl])=>(
-            <div key={id} className="tab" style={tab===id?{color:acv,borderBottom:`2px solid ${acv}`,marginBottom:-1,fontWeight:600}:{}}
-              onClick={()=>setTab(id)}>{lbl}</div>
-          ))}
-        </div>
-
-        {tab==="visao"&&(
-          <div>
-            <div className="card">
-              <div className="ctit">T{String.fromCharCode(243)}picos desta Li{String.fromCharCode(231)}{String.fromCharCode(227)}o</div>
-              {l.top.map((t,i)=>(
-                <div key={i} className="topi"><div className="topd" style={{background:acv}}/>{t}</div>
-              ))}
-            </div>
-            <div className="card">
-              <div className="ctit">Gram{String.fromCharCode(225)}ticas Utilizadas</div>
-              {allG.map(g=>(
-                <div key={g.id} style={{display:"flex",alignItems:"flex-start",gap:10,marginBottom:12}}>
-                  <div style={{width:10,height:10,borderRadius:"50%",background:g.color,marginTop:5,flexShrink:0}}/>
-                  <div>
-                    <div style={{fontSize:13,fontWeight:g.base?700:500,color:"var(--tx)"}}>
-                      {g.full}
-                      {g.base&&<span style={{background:g.color,color:"#fff",fontSize:9,padding:"1px 7px",borderRadius:8,marginLeft:7,fontWeight:700}}>BASE</span>}
-                      {g.isCustom&&<span style={{background:"#e3f2fd",color:"#1565c0",fontSize:9,padding:"1px 7px",borderRadius:8,marginLeft:7,fontWeight:700}}>ADICIONADA</span>}
-                    </div>
-                    <div style={{fontSize:11,color:"var(--tx3)",marginTop:2}}>{g.name}</div>
-                  </div>
-                </div>
-              ))}
+            <div className="header-title">
+              Línguas Bíblicas — {lang === 'gk' ? 'Grego do NT' : 'Hebraico Bíblico'}
             </div>
           </div>
         )}
 
-        {tab==="conteudo"&&(
-          ldC&&!aiC[ck]?(
-            <div className="ld"><div className={`sp ${ac}`}/><div className="lt">Gerando explica{String.fromCharCode(231)}{String.fromCharCode(227)}o com {allG.length} gram{String.fromCharCode(225)}ticas{String.fromCharCode(8230)}</div></div>
-          ):(
+        <div className="content">
+          {view === 'home' && (
+            <div className="home-section">
+              <div className="home-title">Línguas Bíblicas</div>
+              <div className="home-subtitle">Seminário Teológico</div>
+              <div className="lang-cards">
+                <div className="lang-card gk" onClick={() => selectLang('gk')}>
+                  <div className="lang-symbol">Ἑλληνικά</div>
+                  <div className="lang-name">Grego do NT</div>
+                  <div className="lang-desc">24 lições • Bergmann (base) + 6 gramáticas</div>
+                  <div className="lang-stats">
+                    <div className="stat">
+                      <div className="stat-num">24</div>
+                      <div className="stat-label">Lições</div>
+                    </div>
+                    <div className="stat">
+                      <div className="stat-num">0</div>
+                      <div className="stat-label">Concluídas</div>
+                    </div>
+                    <div className="stat">
+                      <div className="stat-num">7</div>
+                      <div className="stat-label">Gramáticas</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="lang-card hb" onClick={() => selectLang('hb')}>
+                  <div className="lang-symbol">עברית</div>
+                  <div className="lang-name">Hebraico Bíblico</div>
+                  <div className="lang-desc">24 lições • Kelley (base) + 5 gramáticas</div>
+                  <div className="lang-stats">
+                    <div className="stat">
+                      <div className="stat-num">24</div>
+                      <div className="stat-label">Lições</div>
+                    </div>
+                    <div className="stat">
+                      <div className="stat-num">0</div>
+                      <div className="stat-label">Concluídas</div>
+                    </div>
+                    <div className="stat">
+                      <div className="stat-num">6</div>
+                      <div className="stat-label">Gramáticas</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {view === 'lessons' && (
             <div>
-              <div className="card">
-                <div className="aic" dangerouslySetInnerHTML={{__html:aiC[ck]||""}}/>
-                <div className="refs">
-                  <div className="reft">Fontes desta Li{String.fromCharCode(231)}{String.fromCharCode(227)}o</div>
-                  {allG.map(g=>(
-                    <div key={g.id} className="refi">
-                      <div className="refd" style={{background:g.color}}/>
-                      <span><strong>{g.short}</strong> {String.fromCharCode(8212)} {g.full}. {g.name}. {g.base?"(Gramática Base)":"(Complementar)"}</span>
-                    </div>
-                  ))}
+              <p style={{textAlign:'center', color:'var(--text3)', marginBottom:'20px'}}>
+                Selecione uma lição no painel lateral
+              </p>
+            </div>
+          )}
+
+          {view === 'lesson' && lesson && (
+            <div className="lesson-view">
+              <div className="lesson-header">
+                <div className="lesson-main-title">Lição {lesson}</div>
+                <div className="lesson-main-subtitle">{lessons.find(l => l.id === lesson)?.t}</div>
+              </div>
+
+              <div className="tabs">
+                <button className="tab active">Conteúdo</button>
+                <button className="tab">Atividades</button>
+              </div>
+
+              <div className="tab-content active">
+                <div className="content-text">
+                  <h3>{lessons.find(l => l.id === lesson)?.t}</h3>
+                  <p>Conteúdo da lição {lesson} em desenvolvimento...</p>
+                  <div className={`tip-box ${lang === 'hb' ? 'hb' : ''}`}>
+                    💡 Este é o espaço para o conteúdo completo da lição.
+                  </div>
                 </div>
               </div>
-              <div style={{textAlign:"right"}}>
-                <button style={{color:"var(--tx3)",border:"1px solid var(--bd)",borderRadius:8,padding:"6px 14px",background:"var(--sf)",cursor:"pointer",fontSize:12,fontFamily:"'Inter',sans-serif"}}
-                  onClick={()=>{setAiC(p=>{const n={...p};delete n[ck];return n;});genC(l);}}>
-                  {String.fromCharCode(8634)} Regenerar explica{String.fromCharCode(231)}{String.fromCharCode(227)}o
-                </button>
-              </div>
-            </div>
-          )
-        )}
 
-        {tab==="vocabulario"&&(
-          <div className="card">
-            <div className="ctit">Termos-Chave desta Li{String.fromCharCode(231)}{String.fromCharCode(227)}o</div>
-            <div className="tgrid">
-              {l.trm.map((term,i)=>{
-                const[lw,...rest]=term.split(" — ");
-                return(
-                  <div key={i} className="tchip">
-                    <span className={`tlang${l.rtl?" hb":""}`} style={{color:acv}}>{lw}</span>
-                    <span className="tpt">{rest.join(" — ")}</span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
-
-        {tab==="atividades"&&(
-          ldQ&&!quizD[qk]?(
-            <div className="ld"><div className={`sp ${ac}`}/><div className="lt">Gerando atividades avaliativas{String.fromCharCode(8230)}</div></div>
-          ):isFin?(()=>{
-            const corr=qs.filter(q=>ans[`${lang}_${l.id}_${q.id}`]===q.correct).length;
-            const pct=Math.round((corr/qs.length)*100);
-            return(
-              <div className="qscore">
-                <div className={`qsn ${ac}`}>{pct}%</div>
-                <div className="qsl">{corr} de {qs.length} quest{String.fromCharCode(245)}es corretas</div>
-                <div className="qsm">{pct>=80?"🎉 Excelente! Você dominou esta lição.":pct>=60?"👍 Bom progresso! Revise os pontos que errou.":"📖 Continue estudando — a perseverança é fundamental."}</div>
-                <div style={{display:"flex",gap:10,justifyContent:"center",flexWrap:"wrap"}}>
-                  <button className="nb" onClick={()=>resetQ(l.id)}>{String.fromCharCode(8634)} Refazer</button>
-                  {next&&<button className={`nb p${ac[0]}`} onClick={()=>{setLesson(next);setTab("conteudo");}}>Li{String.fromCharCode(231)}{String.fromCharCode(227)}o {next.id} {String.fromCharCode(8594)}</button>}
-                </div>
-              </div>
-            );
-          })():(
-            <div className="qcont">
-              {qs.map((q,qi)=>{
-                const ak=`${lang}_${l.id}_${q.id}`;
-                const chosen=ans[ak];
-                const answered=chosen!==undefined;
-                const isOk=chosen===q.correct;
-                return(
-                  <div key={q.id} className={`qcard${answered?(isOk?" ok":" bad"):""}`}>
-                    <div className="qnum">Quest{String.fromCharCode(227)}o {qi+1} {String.fromCharCode(183)} {qi<3?"Básica":qi<6?"Intermediária":"Avançada"}</div>
-                    <div className="qq" dangerouslySetInnerHTML={{__html:q.question}}/>
-                    <div className="qopts">
-                      {q.options.map((opt,oi)=>{
-                        let cls="qo";
-                        if(!isG) cls+=" blhov";
-                        if(answered){
-                          cls+=" disabled";
-                          if(oi===chosen) cls+=isOk?" sok":" sbad";
-                          if(oi===q.correct&&!isOk) cls+=" show";
-                        }
-                        return(
-                          <button key={oi} className={cls} disabled={answered} onClick={()=>answer(l.id,q.id,oi)}>
-                            <strong>{["A","B","C","D"][oi]}.</strong>&nbsp;{opt}
-                          </button>
-                        );
-                      })}
+              <div className="grammars-section">
+                <div className="grammars-title">Fontes desta lição</div>
+                {grammars.map((g, i) => (
+                  <div key={i} className={`grammar-item ${lang === 'hb' ? 'hb' : ''} ${g.isBase ? 'base' : ''}`}>
+                    <div className="grammar-bullet" style={{background: g.isBase ? (lang === 'gk' ? 'var(--accent-gk)' : 'var(--accent-hb)') : 'var(--border)'}}></div>
+                    <div>
+                      {g.name}
+                      {g.isBase && <span className="grammar-base">{lang === 'gk' ? 'BERGMANN' : 'KELLEY'}</span>}
                     </div>
-                    {answered&&(
-                      <div className={`qfb${isOk?" ok":" bad"}`}>
-                        {isOk?`✓ ${q.feedback.correct}`:`✗ ${q.feedback.incorrect}`}
-                      </div>
-                    )}
                   </div>
-                );
-              })}
-              {qs.length>0&&(
-                <div style={{textAlign:"center",padding:"8px 0 16px"}}>
-                  <button disabled={!allAns}
-                    style={{padding:"10px 28px",borderRadius:8,background:allAns?acv:"var(--bd)",color:"#fff",border:"none",fontSize:14,fontWeight:600,cursor:allAns?"pointer":"not-allowed",fontFamily:"'Inter',sans-serif"}}
-                    onClick={()=>finishQ(l.id)}>Ver resultado final
+                ))}
+              </div>
+
+              <div className="nav">
+                {lesson > 1 && (
+                  <button className="nav-btn" onClick={() => selectLesson(lesson - 1)}>
+                    ← Lição {lesson - 1}
                   </button>
-                  {!allAns&&<div style={{fontSize:11,color:"var(--tx3)",marginTop:6}}>Responda todas as quest{String.fromCharCode(245)}es para ver o resultado</div>}
-                </div>
-              )}
-            </div>
-          )
-        )}
-
-        <div className="lnav">
-          <button className={`nb ${ac}`} onClick={()=>prev?setLesson(prev):setLesson(null)}>
-            {String.fromCharCode(8592)} {prev?`Lição ${prev.id}`:"Início"}
-          </button>
-          <span style={{fontSize:12,color:"var(--tx3)"}}>{l.id} / 24</span>
-          {next&&<button className={`nb p${ac[0]}`} onClick={()=>setLesson(next)}>Li{String.fromCharCode(231)}{String.fromCharCode(227)}o {next.id} {String.fromCharCode(8594)}</button>}
-        </div>
-      </div>
-    );
-  };
-
-  // SIDEBAR
-  const Sidebar=()=>{
-    if(!lang) return null;
-    return(
-      <div className="sbar">
-        <div className="prog-w">
-          <div className="prog-lbl"><span>Progresso</span><span>{done.length}/24</span></div>
-          <div className="prog-bar"><div className={`prog-fill fill-${ac[0]}`} style={{width:`${prog}%`}}/></div>
-        </div>
-        <div className="sbar-list">
-          {lessons.map(l=>(
-            <div key={l.id} className={`li ${lesson?.id===l.id?(isG?"ag":"ah"):""} ${done.includes(l.id)?"done":""}`}
-              onClick={()=>{setLesson(l);setTab("conteudo");}}>
-              <div className="linum">{l.id}</div>
-              <div className="lidot" style={{background:acv}}/>
-              <div className="liinfo">
-                <div className="litit">{l.t}</div>
-                {l.s&&<div className="lisub">{l.s}</div>}
+                )}
+                <div></div>
+                {lesson < 24 && (
+                  <button className="nav-btn" onClick={() => selectLesson(lesson + 1)}>
+                    Lição {lesson + 1} →
+                  </button>
+                )}
               </div>
-              <div className="lichk" style={{color:acv}}>{String.fromCharCode(10003)}</div>
             </div>
-          ))}
-        </div>
-        <div className="gp">
-          <div className="gp-lbl">Gram{String.fromCharCode(225)}ticas</div>
-          {allG.map(g=>(
-            <div key={g.id} className="gp-i">
-              <div className="gp-dot" style={{background:g.color}}/>
-              <div className="gp-nm">{g.short}</div>
-              {g.base&&<div className="gp-bdg" style={{background:g.color}}>BASE</div>}
-              {g.isCustom&&<div style={{fontSize:9,background:"#e3f2fd",color:"#1565c0",padding:"1px 6px",borderRadius:8,fontWeight:700}}>+</div>}
-            </div>
-          ))}
-          
+          )}
         </div>
       </div>
-    );
-  };
-
-  // UPLOAD MODAL
-  const UpModal=()=>(
-    <div className="mov" onClick={e=>e.target===e.currentTarget&&setShowUp(false)}>
-      <div className="mod">
-        <div className="modtit">Adicionar Gram{String.fromCharCode(225)}tica de {isG?"Grego":"Hebraico"}</div>
-        <div className="modsub">
-          Adicione uma gram{String.fromCharCode(225)}tica em PDF. Ela ser{String.fromCharCode(225)} automaticamente usada para enriquecer todas as li{String.fromCharCode(231)}{String.fromCharCode(245)}es, sempre referenciada quando citada.
-        </div>
-        <div className={`ua${drag?" ov":""}`+(!isG?" hbm":"")}
-          onClick={()=>fRef.current?.click()}
-          onDragOver={e=>{e.preventDefault();setDrag(true);}}
-          onDragLeave={()=>setDrag(false)}
-          onDrop={e=>{e.preventDefault();setDrag(false);handleFile(e.dataTransfer.files[0]);}}>
-          <input ref={fRef} type="file" accept=".pdf" style={{display:"none"}} onChange={e=>handleFile(e.target.files[0])}/>
-          <div className="uaico">{upFile?"📄":"📂"}</div>
-          <div className="uatxt">{upFile?upFile.name:"Clique ou arraste o PDF aqui"}</div>
-          <div className="uahnt">Apenas arquivos PDF</div>
-        </div>
-        <input className={`mi${!isG?" hbm":""}`} placeholder="Nome do(s) autor(es) *" value={upMeta.a} onChange={e=>setUpMeta(p=>({...p,a:e.target.value}))}/>
-        <input className={`mi${!isG?" hbm":""}`} placeholder="Título completo da obra *" value={upMeta.t} onChange={e=>setUpMeta(p=>({...p,t:e.target.value}))}/>
-        <input className={`mi${!isG?" hbm":""}`} placeholder="Ano de publicação (opcional)" value={upMeta.y} onChange={e=>setUpMeta(p=>({...p,y:e.target.value}))}/>
-        {custG.length>0&&(
-          <div style={{marginTop:12}}>
-            <div style={{fontSize:10,color:"var(--tx3)",fontWeight:700,textTransform:"uppercase",letterSpacing:".05em",marginBottom:6}}>J{String.fromCharCode(225)} adicionadas</div>
-            {custG.map(g=>(
-              <div key={g.id} className="adi">
-                <div style={{width:8,height:8,borderRadius:"50%",background:g.color,flexShrink:0}}/>
-                <div style={{flex:1}}>{g.full}</div>
-                <button style={{background:"none",border:"none",color:"var(--tx3)",cursor:"pointer",fontSize:17}} onClick={()=>setCustG(p=>p.filter(x=>x.id!==g.id))}>{String.fromCharCode(215)}</button>
-              </div>
-            ))}
-          </div>
-        )}
-        <div className="mact">
-          <button className="bcnc" onClick={()=>{setShowUp(false);setUpFile(null);setUpMeta({a:"",t:"",y:""});}}>Cancelar</button>
-          <button className={`bok ${isG?"gk":"hb"}`} disabled={!upFile||!upMeta.a||!upMeta.t} onClick={addGrammar}>
-            Adicionar {String.fromCharCode(224)} biblioteca
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-
-  return(
-    <div style={{minHeight:"100vh",display:"flex",flexDirection:"column"}}>
-      {/* HEADER */}
-      <div className="hdr">
-        <div className="hdr-mark" onClick={()=>{setLang(null);setLesson(null);}}>{"\u0395\u03bb \u00b7 \u05e2\u05d1"}</div>
-        <div className="hdr-sep"/>
-        <div>
-          <div className="hdr-title">L{String.fromCharCode(237)}nguas <em>B{String.fromCharCode(237)}blicas</em></div>
-          <div className="hdr-sub">Grego NT {String.fromCharCode(183)} Hebraico AT {String.fromCharCode(183)} Semin{String.fromCharCode(225)}rio</div>
-        </div>
-        <div className="hdr-right">
-          {lang&&lesson&&<button className="btn-h" onClick={()=>setLesson(null)}>{String.fromCharCode(8592)} Li{String.fromCharCode(231)}{String.fromCharCode(245)}es</button>}
-          {lang&&!lesson&&<button className="btn-h" onClick={()=>setLang(null)}>{String.fromCharCode(8592)} In{String.fromCharCode(237)}cio</button>}
-          
-        </div>
-      </div>
-
-      {/* LANG BAR */}
-      <div className="lbar">
-        <div className={`ltab${lang==="greek"?" ag":""}`} onClick={()=>{setLang("greek");setLesson(null);}}>
-          <span className="l-icon" style={{color:"var(--gn)"}}>{String.fromCharCode(913)}</span>
-          Grego do NT
-          <span className="l-cnt">{gkDone.length}/24</span>
-        </div>
-        <div className={`ltab${lang==="hebrew"?" ah":""}`} onClick={()=>{setLang("hebrew");setLesson(null);}}>
-          <span className="l-icon" style={{color:"var(--bl)"}}>{String.fromCharCode(1488)}</span>
-          Hebraico B{String.fromCharCode(237)}blico
-          <span className="l-cnt">{hbDone.length}/24</span>
-        </div>
-      </div>
-
-
-      {/* SEARCH BAR */}
-      <div style={{background:'var(--sf)',borderBottom:'1px solid var(--bd)',padding:'8px 28px',display:'flex',gap:10,alignItems:'center'}}>
-        <div style={{flex:1,position:'relative',maxWidth:600}}>
-          <input
-            value={search}
-            onChange={e=>{setSearch(e.target.value);doSearch(e.target.value);}}
-            placeholder="🔍 Pesquisar conceito em todas as gramáticas... (ex: subjuntivo, dagesh, construto)"
-            style={{width:'100%',padding:'8px 14px',border:'1.5px solid var(--bd)',borderRadius:8,fontSize:13,fontFamily:"'Inter',sans-serif",background:'var(--sf)',color:'var(--tx)',outline:'none'}}
-            onFocus={e=>e.target.style.borderColor='var(--gn)'}
-            onBlur={e=>e.target.style.borderColor='var(--bd)'}
-          />
-        </div>
-        {searchResults&&<button onClick={()=>{setSearch('');setSearchResults(null);}} style={{fontSize:12,color:'var(--tx3)',background:'none',border:'none',cursor:'pointer'}}>{String.fromCharCode(10005)} Limpar</button>}
-      </div>
-
-      {searchResults ? <SearchResults results={searchResults} onSelect={(lng,l)=>{setLang(lng);setLesson(l);setTab('conteudo');setSearchResults(null);setSearch('');}} /> : <div className="layout">
-        <Sidebar/>
-        <div className="main">
-          {!lang&&<Home/>}
-          {lang&&!lesson&&<LangHome/>}
-          {lang&&lesson&&<LessonView/>}
-        </div>
-      </div>
-
-      
-      {toast&&<div className="toast">{toast}</div>}
     </div>
   );
 }
 
-ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
-
-
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
 </script>
 </body>
 </html>
